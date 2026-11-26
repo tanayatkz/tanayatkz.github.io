@@ -39,11 +39,11 @@ header{display:flex;justify-content:space-between;align-items:center;gap:8px;pad
 main{flex:1;display:flex;align-items:center;justify-content:center;padding:8px max(5vw,16px)}
 .card{max-width:640px;width:100%;text-align:center;background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);border-radius:28px;padding:clamp(22px,5vw,40px) clamp(18px,5vw,40px) 16px}
 .tag{display:inline-block;font-size:13px;font-weight:600;color:#111;background:#fff;border-radius:99px;padding:3px 12px;margin-bottom:16px}
-.ar{font-family:Amiri,serif;font-size:clamp(28px,6.5vw,42px);line-height:1.9;direction:rtl;margin:0 0 20px;text-wrap:balance;text-shadow:0 2px 12px rgba(0,0,0,.35)}
-.tr{font-size:clamp(17px,2.6vw,20px);line-height:1.55;margin:0 0 16px;text-wrap:balance}
+.ar{font-family:Amiri,serif;font-size:var(--fa,clamp(28px,6.5vw,42px));line-height:var(--la,1.9);direction:rtl;margin:0 0 20px;text-wrap:balance;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.tr{font-size:var(--ft,clamp(17px,2.6vw,20px));line-height:1.5;margin:0 0 16px;text-wrap:balance}
 .ref{font-size:14px;color:var(--mut);margin:0}
 .ref a{color:var(--mut);text-underline-offset:3px}
-.by{font-size:12.5px;color:var(--mut);margin:6px 0 0}.card.loading{opacity:.55;transition:opacity .2s}.card.long .ar{font-size:clamp(22px,5vw,30px);line-height:1.85}.card.long .tr{font-size:16px}
+.by{font-size:12.5px;color:var(--mut);margin:6px 0 0}.card.loading{opacity:.55;transition:opacity .2s}
 .sub{font-size:13px;color:var(--mut);margin:6px 0 0}
 .sub button{font:inherit;color:#fff;background:none;border:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px}
 .tools{display:flex;justify-content:center;gap:4px;margin-top:8px}
@@ -97,6 +97,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 /* картинка */
 .shot{display:block;width:auto;max-width:100%;max-height:62dvh;margin:0 auto 14px;border-radius:16px;-webkit-touch-callout:default;user-select:auto}
 .wait{height:40dvh;display:grid;place-items:center;color:var(--mut)}
+body.tight header{padding-top:8px;padding-bottom:6px}body.tight main{padding-top:2px;padding-bottom:2px}body.tight .card{padding:14px 14px 8px}body.tight .tag{margin-bottom:8px}body.tight .ar{margin-bottom:10px}body.tight .tr{margin-bottom:8px}body.tight .by,body.tight .sub{margin-top:2px}body.tight .tools{margin-top:0}body.tight .ti{height:38px}body.tight footer{padding-top:6px;gap:6px}body.tight .note{font-size:11.5px}body.tight .note+.note{display:none}body.tight .go,body.tight .fact{min-height:48px}
 .in{animation:in .6s ease}
 @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.in{animation:none}.bg{transition:none}}
@@ -326,16 +327,17 @@ const API='https://api.alquran.cloud/v1/ayah/';
 const mem={};
 async function loadAyah(ref){
   if(mem[ref])return mem[ref];
-  try{const c=JSON.parse(localStorage.getItem('ay3:'+ref)||'null');if(c&&c.ar){mem[ref]=c;return c}}catch(e){}
+  try{const c=JSON.parse(localStorage.getItem('ay4:'+ref)||'null');if(c&&c.ar){mem[ref]=c;return c}}catch(e){}
   const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),9000);
   const r=await fetch(API+ref+'/editions/quran-uthmani,ru.kuliev,kk.khalifahaltai,ar.alafasy',{signal:ctl.signal});clearTimeout(tm);
   const j=await r.json();if(j.code!==200||!Array.isArray(j.data))throw new Error('api');
   const by={};j.data.forEach(d=>by[d.edition.identifier]=d);
   const [s,v]=ref.split(':').map(Number);let ar=String(by['quran-uthmani'].text||'').trim();
+  ar=ar.replace(/^۞\s*/,'');
   if(s!==1&&s!==9&&v===1){const w=ar.split(' ');if(/^بِسْمِ/.test(w[0])&&w.length>4)ar=w.slice(4).join(' ')}
   const o={ref,s,v,ar,ru:String(by['ru.kuliev']?.text||''),kz:String(by['kk.khalifahaltai']?.text||''),audio:String(by['ar.alafasy']?.audio||''),src:true};
   if(!/^https:\/\//.test(o.audio))o.audio='';
-  mem[ref]=o;try{localStorage.setItem('ay3:'+ref,JSON.stringify(o))}catch(e){}
+  mem[ref]=o;try{localStorage.setItem('ay4:'+ref,JSON.stringify(o))}catch(e){}
   return o;
 }
 function offlineAyah(ref){const f=A.find(x=>x[0]===ref)||A[Math.floor(Math.random()*A.length)];const [s,v]=f[0].split(':');return {ref:f[0],s:+s,v:+v.split('-')[0],ar:f[1],ru:f[2],kz:f[3],audio:'',src:false}}
@@ -355,7 +357,7 @@ const I_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7
 function render(anim){
   if(!C)return;const c=C;
   const _d=dailyDate(),dd=L==='kz'?_d.getDate()+' '+['қаңтар','ақпан','наурыз','сәуір','мамыр','маусым','шілде','тамыз','қыркүйек','қазан','қараша','желтоқсан'][_d.getMonth()]:_d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
-  card.classList.toggle('long',c.ar.length>260||trOf(c).length>420);card.classList.remove('loading');
+  card.classList.remove('loading');
   card.innerHTML=`<div class="${anim?'in':''}">${isDaily?`<span class="tag">${esc(t('daily'))} · ${esc(dd)}</span>`:''}
   <p class="ar" lang="ar">${esc(c.ar)}</p><p class="tr">${esc(trOf(c))}</p>
   <p class="ref">${esc(surah(c.s))} · <a href="https://quran.com/${c.s}/${c.v}" target="_blank" rel="noopener">${esc(c.ref)}</a></p>
@@ -364,7 +366,16 @@ function render(anim){
   <div class="tools">${c.audio?`<button class="ti" id="pl" type="button" aria-label="${esc(t('listen'))}" title="${esc(t('listen'))}">${playing?I_PAUSE:I_PLAY}</button>`:''}<button class="ti" id="cp" type="button" aria-label="${esc(t('copy'))}" title="${esc(t('copy'))}">${I_COPY}</button><button class="ti" id="im" type="button" aria-label="${esc(t('img'))}" title="${esc(t('img'))}">${I_IMG}</button></div></div>`;
   $('cp').onclick=copy;$('im').onclick=makeImage;const pl=$('pl');if(pl)pl.onclick=togglePlay;
   const bk=$('bk');if(bk)bk.onclick=()=>{stop();showDaily(true)};
+  fit();
 }
+/* подгоняем размер текста, чтобы аят помещался в экран без прокрутки */
+function fit(){const a=card.querySelector('.ar');if(!a)return;const de=document.documentElement,W=innerWidth;
+  let fa=Math.min(42,Math.max(28,W*.065)),ft=Math.min(20,Math.max(17,W*.045));
+  document.body.classList.remove('tight');
+  const set=()=>{card.style.setProperty('--fa',fa.toFixed(1)+'px');card.style.setProperty('--ft',ft.toFixed(1)+'px');card.style.setProperty('--la',fa<26?'1.75':'1.9')};set();
+  for(let k=0;k<40&&de.scrollHeight>innerHeight+1;k++){if(fa<=22&&!document.body.classList.contains('tight'))document.body.classList.add('tight');if(fa<=17&&ft<=13)break;fa=Math.max(17,fa*.94);ft=Math.max(13,ft*.96);set()}}
+addEventListener('resize',()=>{clearTimeout(fit.t);fit.t=setTimeout(fit,150)});
+try{document.fonts.ready.then(fit)}catch(e){}
 async function show_(i,daily,bg){
   stop();const id=++reqId;isDaily=daily;curP=i;const ref=P[i];
   card.classList.add('loading');setBg(bg);
