@@ -43,6 +43,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:8px m
 .tr{font-size:clamp(17px,2.6vw,20px);line-height:1.55;margin:0 0 16px;text-wrap:balance}
 .ref{font-size:14px;color:var(--mut);margin:0}
 .ref a{color:var(--mut);text-underline-offset:3px}
+.by{font-size:12.5px;color:var(--mut);margin:6px 0 0}.card.loading{opacity:.55;transition:opacity .2s}.card.long .ar{font-size:clamp(22px,5vw,30px);line-height:1.85}.card.long .tr{font-size:16px}
 .sub{font-size:13px;color:var(--mut);margin:6px 0 0}
 .sub button{font:inherit;color:#fff;background:none;border:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px}
 .tools{display:flex;justify-content:center;gap:4px;margin-top:8px}
@@ -236,8 +237,8 @@ const SK={1:'Фатиха',2:'Бақара',3:'Әли Имран',4:'Ниса',5
 
 
 const T={
-ru:{zikr:'Зикр',random:'Случайный аят',daily:'Аят дня',back:'Вернуться к аяту дня',next:'Следующий аят дня через',h:'ч',m:'мин',note:'Смысловой перевод — простой пересказ значения, не канонический перевод.',playing:'Звучит смысл по-русски. Чтение на арабском — по ссылке под аятом.',copy:'Скопировать',img:'Картинка для сторис',copied:'Скопировано',nocopy:'Не удалось скопировать',listen:'Слушать',stop:'Остановить',dTitle:'Поддержать проект',dText:'Пожертвования помогают развивать сайт и добавлять новые аяты.',dPct:'всех пожертвований направляется на благотворительность и помощь мечетям',soon:'Ссылка для пожертвований скоро появится',give:'Пожертвовать',factBtn:'Факт',factTitle:'Знаете ли вы?',factNext:'Ещё факт',src:'Источник',kcopy:'Скопировать номер',khow:'Откройте Kaspi → Переводы → «Клиенту Kaspi» и вставьте номер. Любая сумма — садака.',close:'Закрыть',reset:'Сбросить',stage:'Этап',of:'из',fin:'МашаАллах! Зикр завершён — 100 раз.',now:'Теперь — ',hold:'Нажмите и удерживайте картинку, чтобы сохранить или отправить.',save:'Сохранить картинку',saved:'Картинка сохранена',declined:'Сохранение отменено',altai:'',making:'Рисуем картинку…',noimg:'Не удалось сделать картинку',quran:'Коран',bism:'Во имя Аллаха, Милостивого, Милосердного',dateL:'ru-RU',voice:'ru-RU'},
-kz:{zikr:'Зікір',random:'Кездейсоқ аят',daily:'Күннің аяты',back:'Күннің аятына оралу',next:'Келесі күннің аяты',h:'сағ',m:'мин',note:'Мағыналық аударма — мағынаның қарапайым баяндалуы, канондық аударма емес.',playing:'Мағынасы қазақша оқылуда. Арабша оқылуы — аяттың астындағы сілтемеде.',copy:'Көшіру',img:'Сторис үшін сурет',copied:'Көшірілді',nocopy:'Көшіру мүмкін болмады',listen:'Тыңдау',stop:'Тоқтату',dTitle:'Жобаны қолдау',dText:'Қайырымдылық сайтты дамытуға және жаңа аяттар қосуға көмектеседі.',dPct:'барлық түскен қаражаттың қайырымдылыққа және мешіттерге көмекке жіберіледі',soon:'Қайырымдылық сілтемесі жақында пайда болады',give:'Қолдау көрсету',factBtn:'Дерек',factTitle:'Білесіз бе?',factNext:'Тағы бір дерек',src:'Дереккөз',kcopy:'Нөмірді көшіру',khow:'Kaspi → Аударымдар → «Kaspi клиентіне» бөліміне нөмірді қойыңыз. Кез келген сома — садақа.',close:'Жабу',reset:'Қайта бастау',stage:'Кезең',of:'/',fin:'МашаАллаһ! Зікір аяқталды — 100 рет.',now:'Енді — ',hold:'Сақтау немесе жіберу үшін суретті басып тұрыңыз.',save:'Суретті сақтау',saved:'Сурет сақталды',declined:'Сақтау тоқтатылды',altai:'Халифа Алтай аудармасы',making:'Сурет салынуда…',noimg:'Сурет жасау мүмкін болмады',quran:'Құран',bism:'Аса Қамқор, ерекше Мейірімді Алланың атымен',dateL:'kk-KZ',voice:'kk-KZ'}};
+ru:{zikr:'Зикр',random:'Случайный аят',daily:'Аят дня',back:'Вернуться к аяту дня',next:'Следующий аят дня через',h:'ч',m:'мин',note:'Текст Корана: Tanzil. Переводы и чтение: alquran.cloud.',playing:'Звучит смысл по-русски. Чтение на арабском — по ссылке под аятом.',copy:'Скопировать',img:'Картинка для сторис',copied:'Скопировано',nocopy:'Не удалось скопировать',listen:'Слушать',stop:'Остановить',dTitle:'Поддержать проект',dText:'Пожертвования помогают развивать сайт и добавлять новые аяты.',dPct:'всех пожертвований направляется на благотворительность и помощь мечетям',soon:'Ссылка для пожертвований скоро появится',give:'Пожертвовать',byRu:'Перевод смыслов: Эльмир Кулиев',byKz:'Аударма: Халифа Алтай',offline:'Нет интернета — показан краткий пересказ смысла',noaudio:'Не удалось включить чтеца',factBtn:'Факт',factTitle:'Знаете ли вы?',factNext:'Ещё факт',src:'Источник',kcopy:'Скопировать номер',khow:'Откройте Kaspi → Переводы → «Клиенту Kaspi» и вставьте номер. Любая сумма — садака.',close:'Закрыть',reset:'Сбросить',stage:'Этап',of:'из',fin:'МашаАллах! Зикр завершён — 100 раз.',now:'Теперь — ',hold:'Нажмите и удерживайте картинку, чтобы сохранить или отправить.',save:'Сохранить картинку',saved:'Картинка сохранена',declined:'Сохранение отменено',altai:'',making:'Рисуем картинку…',noimg:'Не удалось сделать картинку',quran:'Коран',bism:'Во имя Аллаха, Милостивого, Милосердного',dateL:'ru-RU',voice:'ru-RU'},
+kz:{zikr:'Зікір',random:'Кездейсоқ аят',daily:'Күннің аяты',back:'Күннің аятына оралу',next:'Келесі күннің аяты',h:'сағ',m:'мин',note:'Құран мәтіні: Tanzil. Аудармалар мен қари: alquran.cloud.',playing:'Мағынасы қазақша оқылуда. Арабша оқылуы — аяттың астындағы сілтемеде.',copy:'Көшіру',img:'Сторис үшін сурет',copied:'Көшірілді',nocopy:'Көшіру мүмкін болмады',listen:'Тыңдау',stop:'Тоқтату',dTitle:'Жобаны қолдау',dText:'Қайырымдылық сайтты дамытуға және жаңа аяттар қосуға көмектеседі.',dPct:'барлық түскен қаражаттың қайырымдылыққа және мешіттерге көмекке жіберіледі',soon:'Қайырымдылық сілтемесі жақында пайда болады',give:'Қолдау көрсету',byRu:'Перевод смыслов: Эльмир Кулиев',byKz:'Аударма: Халифа Алтай',offline:'Интернет жоқ — мағынасы қысқаша берілді',noaudio:'Қариды қосу мүмкін болмады',factBtn:'Дерек',factTitle:'Білесіз бе?',factNext:'Тағы бір дерек',src:'Дереккөз',kcopy:'Нөмірді көшіру',khow:'Kaspi → Аударымдар → «Kaspi клиентіне» бөліміне нөмірді қойыңыз. Кез келген сома — садақа.',close:'Жабу',reset:'Қайта бастау',stage:'Кезең',of:'/',fin:'МашаАллаһ! Зікір аяқталды — 100 рет.',now:'Енді — ',hold:'Сақтау немесе жіберу үшін суретті басып тұрыңыз.',save:'Суретті сақтау',saved:'Сурет сақталды',declined:'Сақтау тоқтатылды',altai:'Халифа Алтай аудармасы',making:'Сурет салынуда…',noimg:'Сурет жасау мүмкін болмады',quran:'Құран',bism:'Аса Қамқор, ерекше Мейірімді Алланың атымен',dateL:'kk-KZ',voice:'kk-KZ'}};
 let L='kz';try{const v=localStorage.getItem('lang');if(v==='kz'||v==='ru')L=v}catch(e){}
 const t=k=>T[L][k];
 const $=id=>document.getElementById(id);
@@ -317,39 +318,76 @@ async function setBg(n){
 }
 function randomScene(){let n;do{n=Math.floor(Math.random()*100)}while(n%SCENES.length===curScene%SCENES.length);return n}
 
+/* ---------- проверенная база: текст Корана (Tanzil, Усмани), переводы Кулиева и Халифы Алтая, чтец Мишари аль-Афаси — через api.alquran.cloud ---------- */
+const NAMES='Аль-Фатиха|Аль-Бакара|Алю Имран|Ан-Ниса|Аль-Маида|Аль-Анам|Аль-Араф|Аль-Анфаль|Ат-Тауба|Юнус|Худ|Юсуф|Ар-Рад|Ибрахим|Аль-Хиджр|Ан-Нахль|Аль-Исра|Аль-Кахф|Марьям|Та Ха|Аль-Анбия|Аль-Хадж|Аль-Муминун|Ан-Нур|Аль-Фуркан|Аш-Шуара|Ан-Намль|Аль-Касас|Аль-Анкабут|Ар-Рум|Лукман|Ас-Саджда|Аль-Ахзаб|Саба|Фатир|Йа Син|Ас-Саффат|Сад|Аз-Зумар|Гафир|Фуссылят|Аш-Шура|Аз-Зухруф|Ад-Духан|Аль-Джасия|Аль-Ахкаф|Мухаммад|Аль-Фатх|Аль-Худжурат|Каф|Аз-Зарийат|Ат-Тур|Ан-Наджм|Аль-Камар|Ар-Рахман|Аль-Вакиа|Аль-Хадид|Аль-Муджадила|Аль-Хашр|Аль-Мумтахана|Ас-Сафф|Аль-Джумуа|Аль-Мунафикун|Ат-Тагабун|Ат-Таляк|Ат-Тахрим|Аль-Мульк|Аль-Калям|Аль-Хакка|Аль-Мааридж|Нух|Аль-Джинн|Аль-Муззаммиль|Аль-Муддассир|Аль-Кияма|Аль-Инсан|Аль-Мурсалят|Ан-Наба|Ан-Назиат|Абаса|Ат-Таквир|Аль-Инфитар|Аль-Мутаффифин|Аль-Иншикак|Аль-Бурудж|Ат-Тарик|Аль-Аля|Аль-Гашия|Аль-Фаджр|Аль-Балад|Аш-Шамс|Аль-Лайль|Ад-Духа|Аш-Шарх|Ат-Тин|Аль-Алак|Аль-Кадр|Аль-Баййина|Аз-Зальзаля|Аль-Адийат|Аль-Кариа|Ат-Такасур|Аль-Аср|Аль-Хумаза|Аль-Филь|Курайш|Аль-Маун|Аль-Каусар|Аль-Кафирун|Ан-Наср|Аль-Масад|Аль-Ихлас|Аль-Фаляк|Ан-Нас'.split('|');
+const surah=s=>NAMES[s-1]||'';
+const P=`1:1 1:2 1:3 1:4 1:5 1:6 1:7 2:2 2:21 2:45 2:152 2:153 2:155 2:156 2:186 2:201 2:216 2:222 2:255 2:256 2:261 2:263 2:268 2:274 2:277 2:285 2:286 3:8 3:26 3:31 3:92 3:103 3:104 3:110 3:133 3:134 3:139 3:159 3:173 3:185 3:190 3:191 3:200 4:28 4:36 4:58 4:110 4:135 5:2 5:8 5:32 6:59 6:103 6:162 7:23 7:31 7:56 7:156 7:199 7:205 8:2 8:46 9:40 9:51 9:119 10:57 10:62 11:6 11:88 11:115 12:64 12:86 12:87 12:90 13:11 13:28 14:7 14:24 14:34 14:40 15:9 15:99 16:18 16:90 16:97 16:125 16:128 17:23 17:24 17:53 17:80 17:82 18:10 18:46 18:109 19:96 20:25 20:26 20:46 20:114 20:130 21:35 21:83 21:87 21:107 23:1 23:2 23:118 24:35 25:63 25:74 26:80 28:24 28:77 29:2 29:45 29:69 30:21 30:22 31:17 31:18 31:19 33:21 33:41 35:15 39:10 39:53 40:44 40:60 41:34 42:30 42:40 47:7 49:10 49:11 49:12 49:13 50:16 51:56 53:39 55:13 55:60 57:4 57:20 59:18 59:22 59:23 59:24 64:11 64:16 65:2 65:3 65:7 67:1 67:2 76:8 76:9 87:14 87:15 89:27 89:28 89:29 89:30 93:3 93:4 93:5 93:11 94:5 94:6 96:1 96:5 97:1 97:3 99:7 99:8 103:1 103:2 103:3 112:1 112:2 112:3 112:4 113:1 114:1`.split(' ');
+const API='https://api.alquran.cloud/v1/ayah/';
+const mem={};
+async function loadAyah(ref){
+  if(mem[ref])return mem[ref];
+  try{const c=JSON.parse(localStorage.getItem('ay3:'+ref)||'null');if(c&&c.ar){mem[ref]=c;return c}}catch(e){}
+  const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),9000);
+  const r=await fetch(API+ref+'/editions/quran-uthmani,ru.kuliev,kk.khalifahaltai,ar.alafasy',{signal:ctl.signal});clearTimeout(tm);
+  const j=await r.json();if(j.code!==200||!Array.isArray(j.data))throw new Error('api');
+  const by={};j.data.forEach(d=>by[d.edition.identifier]=d);
+  const [s,v]=ref.split(':').map(Number);let ar=String(by['quran-uthmani'].text||'').trim();
+  if(s!==1&&s!==9&&v===1){const w=ar.split(' ');if(/^بِسْمِ/.test(w[0])&&w.length>4)ar=w.slice(4).join(' ')}
+  const o={ref,s,v,ar,ru:String(by['ru.kuliev']?.text||''),kz:String(by['kk.khalifahaltai']?.text||''),audio:String(by['ar.alafasy']?.audio||''),src:true};
+  if(!/^https:\/\//.test(o.audio))o.audio='';
+  mem[ref]=o;try{localStorage.setItem('ay3:'+ref,JSON.stringify(o))}catch(e){}
+  return o;
+}
+function offlineAyah(ref){const f=A.find(x=>x[0]===ref)||A[Math.floor(Math.random()*A.length)];const [s,v]=f[0].split(':');return {ref:f[0],s:+s,v:+v.split('-')[0],ar:f[1],ru:f[2],kz:f[3],audio:'',src:false}}
+
 /* ---------- аят дня: меняется каждый день в 10:00 по времени телефона ---------- */
 function dailyDate(){return new Date(Date.now()-DAILY_HOUR*3600e3)}
-function dailyIndex(){const d=dailyDate();const day=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return (day*29+7)%A.length}
+function dailyIndex(){const d=dailyDate();const day=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return (day*37+11)%P.length}
 function untilNext(){const n=new Date(),x=new Date(n);x.setHours(DAILY_HOUR,0,0,0);if(x<=n)x.setDate(x.getDate()+1);const m=Math.ceil((x-n)/6e4);return `${Math.floor(m/60)} ${t('h')} ${m%60} ${t('m')}`}
 
 const card=$('card');
-let cur=-1,isDaily=true,bag=[],lastDaily=-1;
-function next(){if(!bag.length){bag=A.map((_,i)=>i);for(let i=bag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bag[i],bag[j]]=[bag[j],bag[i]]}if(bag[bag.length-1]===cur)bag.unshift(bag.pop())}return bag.pop()}
-const surah=s=>(L==='kz'?SK:S)[s];
+let C=null,curP=-1,isDaily=true,bag=[],lastDaily=-1,reqId=0;
+function next(){if(!bag.length){bag=P.map((_,i)=>i);for(let i=bag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bag[i],bag[j]]=[bag[j],bag[i]]}if(bag[bag.length-1]===curP)bag.unshift(bag.pop())}return bag.pop()}
+const trOf=c=>L==='kz'?c.kz:c.ru;
 const I_COPY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
 const I_IMG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>';
+const I_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',I_PAUSE='<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>';
 function render(anim){
-  const[ref,ar,ru,kz]=A[cur],[s,v]=ref.split(':');
+  if(!C)return;const c=C;
   const _d=dailyDate(),dd=L==='kz'?_d.getDate()+' '+['қаңтар','ақпан','наурыз','сәуір','мамыр','маусым','шілде','тамыз','қыркүйек','қазан','қараша','желтоқсан'][_d.getMonth()]:_d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+  card.classList.toggle('long',c.ar.length>260||trOf(c).length>420);card.classList.remove('loading');
   card.innerHTML=`<div class="${anim?'in':''}">${isDaily?`<span class="tag">${esc(t('daily'))} · ${esc(dd)}</span>`:''}
-  <p class="ar" lang="ar">${esc(ar)}</p><p class="tr">${esc(L==='kz'?kz:ru)}</p>
-  <p class="ref">${esc(surah(s))} · <a href="https://quran.com/${esc(s)}/${esc(v.split('-')[0])}" target="_blank" rel="noopener">${esc(ref)}</a></p>${L==='kz'?`<p class="ref" style="margin-top:4px"><a href="https://quranenc.com/kk/browse/kazakh_altai/${esc(s)}/${esc(v.split('-')[0])}" target="_blank" rel="noopener">${esc(t('altai'))}</a></p>`:''}
+  <p class="ar" lang="ar">${esc(c.ar)}</p><p class="tr">${esc(trOf(c))}</p>
+  <p class="ref">${esc(surah(c.s))} · <a href="https://quran.com/${c.s}/${c.v}" target="_blank" rel="noopener">${esc(c.ref)}</a></p>
+  <p class="by">${esc(c.src?t(L==='kz'?'byKz':'byRu'):t('offline'))}</p>
   ${isDaily?`<p class="sub" id="cd">${esc(t('next'))} ${esc(untilNext())}</p>`:`<p class="sub"><button type="button" id="bk">${esc(t('back'))}</button></p>`}
-  <div class="tools"><button class="ti" id="cp" type="button" aria-label="${esc(t('copy'))}" title="${esc(t('copy'))}">${I_COPY}</button><button class="ti" id="im" type="button" aria-label="${esc(t('img'))}" title="${esc(t('img'))}">${I_IMG}</button></div></div>`;
-  $('cp').onclick=copy;$('im').onclick=makeImage;
+  <div class="tools">${c.audio?`<button class="ti" id="pl" type="button" aria-label="${esc(t('listen'))}" title="${esc(t('listen'))}">${playing?I_PAUSE:I_PLAY}</button>`:''}<button class="ti" id="cp" type="button" aria-label="${esc(t('copy'))}" title="${esc(t('copy'))}">${I_COPY}</button><button class="ti" id="im" type="button" aria-label="${esc(t('img'))}" title="${esc(t('img'))}">${I_IMG}</button></div></div>`;
+  $('cp').onclick=copy;$('im').onclick=makeImage;const pl=$('pl');if(pl)pl.onclick=togglePlay;
   const bk=$('bk');if(bk)bk.onclick=()=>{stop();showDaily(true)};
 }
-function showDaily(anim){isDaily=true;cur=dailyIndex();lastDaily=cur;setBg(cur*3+1);render(anim)}
-$('go').addEventListener('click',()=>{stop();isDaily=false;cur=next();setBg(randomScene());render(true)});
-setInterval(()=>{if(dailyIndex()!==lastDaily){if(isDaily)showDaily(true);else lastDaily=dailyIndex()}else if(isDaily&&$('cd'))$('cd').textContent=`${t('next')} ${untilNext()}`},30000);
-async function copy(){const[ref,ar,ru,kz]=A[cur];try{await navigator.clipboard.writeText(`${ar}\n\n${L==='kz'?kz:ru}\n— ${t('quran')}, ${surah(ref.split(':')[0])} ${ref}`);show(t('copied'))}catch(e){show(t('nocopy'))}}
+async function show_(i,daily,bg){
+  stop();const id=++reqId;isDaily=daily;curP=i;const ref=P[i];
+  card.classList.add('loading');setBg(bg);
+  let c;try{c=await loadAyah(ref)}catch(e){c=offlineAyah(ref)}
+  if(id!==reqId)return;C=c;render(true);
+}
+function showDaily(){const i=dailyIndex();lastDaily=i;show_(i,true,i*3+1)}
+$('go').addEventListener('click',()=>show_(next(),false,randomScene()));
+setInterval(()=>{if(dailyIndex()!==lastDaily){if(isDaily)showDaily();else lastDaily=dailyIndex()}else if(isDaily&&$('cd'))$('cd').textContent=`${t('next')} ${untilNext()}`},30000);
+async function copy(){if(!C)return;try{await navigator.clipboard.writeText(`${C.ar}\n\n${trOf(C)}\n— ${t('quran')}, ${surah(C.s)} ${C.ref}`);show(t('copied'))}catch(e){show(t('nocopy'))}}
+
+/* ---------- чтец ---------- */
+let audio=null,playing=false;
+function setPl(){const pl=$('pl');if(pl){pl.innerHTML=playing?I_PAUSE:I_PLAY;pl.setAttribute('aria-label',playing?t('stop'):t('listen'))}}
+function stop(){if(audio){audio.pause();audio=null}playing=false;setPl()}
+function togglePlay(){if(playing)return stop();if(!C||!C.audio)return;audio=new Audio(C.audio);playing=true;setPl();audio.onended=stop;audio.onerror=()=>{stop();show(t('noaudio'))};audio.play().catch(()=>{stop();show(t('noaudio'))})}
 
 /* ---------- картинка для сторис 1080×1920 ---------- */
 function wrap(ctx,text,maxW){const w=text.split(' '),lines=[];let line='';for(const x of w){const tst=line?line+' '+x:x;if(ctx.measureText(tst).width>maxW&&line){lines.push(line);line=x}else line=tst}if(line)lines.push(line);return lines}
 function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
 let imgBlob=null,dl=null;
 (async()=>{try{dl=await window.claude?.use?.('downloads')}catch(e){dl=null}})();
-$('isave').addEventListener('click',async()=>{if(!imgBlob)return;const name=`tanayat-${A[cur][0].replace(/[:]/g,'-')}.jpg`;
+$('isave').addEventListener('click',async()=>{if(!imgBlob)return;const name=`tanayat-${C.ref.replace(/[:]/g,'-')}.jpg`;
   if(dl){try{await dl.save({filename:name,data:imgBlob});show(t('saved'))}catch(e){if(e&&e.code==='declined')show(t('declined'));else show(t('noimg'))}return}
   const file=new File([imgBlob],name,{type:'image/jpeg'});
   try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});return}}catch(e){if(e&&e.name==='AbortError')return}
@@ -361,15 +399,15 @@ async function makeImage(){
     const W=1080,H=1920,c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d');
     const bgc=await paintScene(curScene,W,H);if(bgc)ctx.drawImage(bgc,0,0);else{ctx.fillStyle='#1b2550';ctx.fillRect(0,0,W,H)}
     const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(0,0,0,.3)');g.addColorStop(.5,'rgba(0,0,0,.1)');g.addColorStop(1,'rgba(0,0,0,.55)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    const[ref,ar,ru,kz]=A[cur],tr=L==='kz'?kz:ru,pad=80,cw=W-2*pad-120;
-    ctx.font='68px Amiri, serif';ctx.direction='rtl';const al=wrap(ctx,ar,cw);
-    ctx.direction='ltr';ctx.font='44px Inter, sans-serif';const tl=wrap(ctx,tr,cw);
-    const hA=al.length*120,hT=tl.length*62,ch=90+hA+40+hT+50+40+80,cy=(H-ch)/2;
+    const ref=C.ref,ar=C.ar,tr=trOf(C),pad=80,cw=W-2*pad-120;
+    let fa=68,ft=44,al,tl;
+    for(let k=0;k<6;k++){ctx.font=`${fa}px Amiri, serif`;ctx.direction='rtl';al=wrap(ctx,ar,cw);ctx.direction='ltr';ctx.font=`${ft}px Inter, sans-serif`;tl=wrap(ctx,tr,cw);if(al.length*fa*1.75+tl.length*ft*1.4<1250)break;fa=Math.round(fa*.87);ft=Math.round(ft*.9)}
+    const la=Math.round(fa*1.75),lt=Math.round(ft*1.4),hA=al.length*la,hT=tl.length*lt,ch=90+hA+40+hT+50+40+80,cy=Math.max(60,(H-ch)/2);
     rr(ctx,pad,cy,W-2*pad,ch,56);ctx.fillStyle='rgba(10,12,20,.42)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,.18)';ctx.lineWidth=2;ctx.stroke();
     ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';let y=cy+90;
-    ctx.font='68px Amiri, serif';ctx.direction='rtl';for(const l of al){ctx.fillText(l,W/2,y+30);y+=120}
-    ctx.direction='ltr';y+=40;ctx.font='44px Inter, sans-serif';for(const l of tl){ctx.fillText(l,W/2,y);y+=62}
-    y+=30;ctx.fillStyle='rgba(255,255,255,.72)';ctx.font='34px Inter, sans-serif';ctx.fillText(`${surah(ref.split(':')[0])} · ${ref}`,W/2,y);
+    ctx.font=`${fa}px Amiri, serif`;ctx.direction='rtl';for(const l of al){ctx.fillText(l,W/2,y+fa*.44);y+=la}
+    ctx.direction='ltr';y+=40;ctx.font=`${ft}px Inter, sans-serif`;for(const l of tl){ctx.fillText(l,W/2,y);y+=lt}
+    y+=30;ctx.fillStyle='rgba(255,255,255,.72)';ctx.font='34px Inter, sans-serif';ctx.fillText(`${surah(C.s)} · ${ref}`,W/2,y);
     ctx.font='600 44px Inter, sans-serif';const wl=ctx.measureText('tan').width,wd=ctx.measureText('·').width,wr=ctx.measureText('ayat').width,x0=W/2-(wl+wd+wr)/2;ctx.textAlign='left';ctx.fillStyle='rgba(255,255,255,.92)';ctx.fillText('tan',x0,H-130);ctx.fillStyle='#f6c25b';ctx.fillText('·',x0+wl,H-130);ctx.fillStyle='rgba(255,255,255,.92)';ctx.fillText('ayat',x0+wl+wd,H-130);ctx.textAlign='center';if(isDaily){ctx.font='30px Inter, sans-serif';ctx.fillStyle='rgba(255,255,255,.7)';ctx.fillText(t('daily'),W/2,H-80)}
     const url=c.toDataURL('image/jpeg',.9);
     imgBlob=await new Promise(r=>c.toBlob(r,'image/jpeg',.92));
@@ -379,7 +417,6 @@ async function makeImage(){
 }
 
 const note=$('note');
-function stop(){}
 
 /* ---------- окна ---------- */
 function open(el){el.classList.add('open')}
@@ -476,11 +513,11 @@ function applyLang(){
   $('donSlot').innerHTML=`<div class="kaspi"><span class="kl">Kaspi</span><b>${esc(KASPI)}</b><button class="btn pri" id="kcp" type="button">${esc(t('kcopy'))}</button><p class="muted">${esc(t('khow'))}</p></div>`;
   $('kcp').onclick=async()=>{try{await navigator.clipboard.writeText(KASPI.replace(/\s/g,''));show(t('copied'))}catch(e){show(t('nocopy'))}};
   note.textContent=t('note');
-  if(cur>=0)render(false);zdraw();drawFact();
+  if(C)render(false);zdraw();drawFact();
 }
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{if(L===b.dataset.l)return;stop();L=b.dataset.l;try{localStorage.setItem('lang',L)}catch(e){}applyLang()}));
 
-showDaily(true);applyLang();
+applyLang();showDaily();
 }
 </script>
 </body>
