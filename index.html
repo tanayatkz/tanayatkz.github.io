@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tanayat</title>
+<title>tanayat</title>
 <meta name="description" content="Күннің аяты, кездейсоқ аят және зікір · Аят дня, случайный аят и зикр">
-<meta property="og:title" content="Tanayat">
+<meta property="og:title" content="tan·ayat">
 <meta property="og:description" content="Күннің аяты · Аят дня">
-<meta property="og:image" content="https://tanayatkz.github.io/og.jpg">
+<meta property="og:image" content="https://tanayatkz.github.io/og.jpg?v=2">
 <meta property="og:url" content="https://tanayatkz.github.io/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1b1f3a">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1f3a'/%3E%3Cpath d='M6 22a10 10 0 0 1 20 0Z' fill='%23f6c25b'/%3E%3Cpath d='M3 24h26' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1f3a'/%3E%3Ctext x='13' y='23.5' font-family='Arial,sans-serif' font-weight='700' font-size='20' fill='%23fff' text-anchor='middle'%3Et%3C/text%3E%3Ccircle cx='23' cy='17' r='2.6' fill='%23f6c25b'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -30,8 +30,8 @@ body{margin:0;background:#0b0f1c;color:#fff;font:16px/1.6 Inter,system-ui,sans-s
 .shade{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.05) 30%,rgba(0,0,0,.15) 60%,rgba(0,0,0,.6))}
 header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px max(5vw,16px)}
 .links{display:flex;gap:6px;align-items:center}
-.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:18px;letter-spacing:.2px;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.3)}.brand .logo{width:30px;height:30px;flex:none}
-@media(max-width:380px){.brand span{display:none}}
+.brand{font-weight:600;font-size:22px;letter-spacing:-.5px;line-height:1;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.3)}.brand i{font-style:normal;color:#f6c25b;margin:0 .5px}
+@media(max-width:360px){.brand{font-size:19px}}
 .chip{font:500 14px Inter,sans-serif;color:#fff;text-decoration:none;background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:99px;padding:0 13px;min-height:38px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
 .lang{display:flex;background:var(--glass);border:1px solid var(--edge);border-radius:99px;padding:3px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .lang button{font:600 13px Inter,sans-serif;color:var(--mut);background:none;border:0;border-radius:99px;min-width:40px;min-height:32px;cursor:pointer}
@@ -104,7 +104,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 <div class="bg" id="bgA"></div><div class="bg" id="bgB" style="opacity:0"></div><div class="shade"></div>
 
 <header>
-  <div class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 22a10 10 0 0 1 20 0Z" fill="#f6c25b"/><g stroke="#f6c25b" stroke-width="2" stroke-linecap="round"><path d="M16 6v4M7 11l2.6 2.6M25 11l-2.6 2.6M3 18h3M26 18h3"/></g><path d="M2 24h28" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M8 28h16" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".5"/></svg><span>Tanayat</span></div>
+  <div class="brand" aria-label="tanayat">tan<i>·</i>ayat</div>
   <div class="links">
   <div class="lang" role="group" aria-label="Язык"><button type="button" data-l="kz">KZ</button><button type="button" data-l="ru">RU</button></div>
     <button class="chip" id="zbtn" type="button" data-t="zikr">Зикр</button>
@@ -353,7 +353,7 @@ async function makeImage(){
     ctx.font='68px Amiri, serif';ctx.direction='rtl';for(const l of al){ctx.fillText(l,W/2,y+30);y+=120}
     ctx.direction='ltr';y+=40;ctx.font='44px Inter, sans-serif';for(const l of tl){ctx.fillText(l,W/2,y);y+=62}
     y+=30;ctx.fillStyle='rgba(255,255,255,.72)';ctx.font='34px Inter, sans-serif';ctx.fillText(`${surah(ref.split(':')[0])} · ${ref}`,W/2,y);
-    ctx.font='600 30px Inter, sans-serif';ctx.fillStyle='rgba(255,255,255,.8)';ctx.fillText('Tanayat'+(isDaily?' · '+t('daily'):''),W/2,H-120);
+    ctx.font='600 44px Inter, sans-serif';const wl=ctx.measureText('tan').width,wd=ctx.measureText('·').width,wr=ctx.measureText('ayat').width,x0=W/2-(wl+wd+wr)/2;ctx.textAlign='left';ctx.fillStyle='rgba(255,255,255,.92)';ctx.fillText('tan',x0,H-130);ctx.fillStyle='#f6c25b';ctx.fillText('·',x0+wl,H-130);ctx.fillStyle='rgba(255,255,255,.92)';ctx.fillText('ayat',x0+wl+wd,H-130);ctx.textAlign='center';if(isDaily){ctx.font='30px Inter, sans-serif';ctx.fillStyle='rgba(255,255,255,.7)';ctx.fillText(t('daily'),W/2,H-80)}
     const url=c.toDataURL('image/jpeg',.9);
     imgBlob=await new Promise(r=>c.toBlob(r,'image/jpeg',.92));
     slot.innerHTML=`<img class="shot" alt="${esc(tr)}" src="${url}">`;
