@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>tanayat</title>
 <meta name="description" content="Күннің аяты, кездейсоқ аят және зікір · Аят дня, случайный аят и зикр">
 <meta property="og:title" content="tan·ayat">
@@ -12,7 +12,13 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1b1f3a">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1f3a'/%3E%3Ctext x='13' y='23.5' font-family='Arial,sans-serif' font-weight='700' font-size='20' fill='%23fff' text-anchor='middle'%3Et%3C/text%3E%3Ccircle cx='23' cy='17' r='2.6' fill='%23f6c25b'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tanayat">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -28,7 +34,7 @@ body{margin:0;background:#0b0f1c;color:#fff;font:16px/1.6 Inter,system-ui,sans-s
 .bg{position:fixed;inset:0;z-index:-2;transition:opacity 1s ease}
 .bg svg,.bg img{width:100%;height:100%;display:block;object-fit:cover}
 .shade{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.05) 30%,rgba(0,0,0,.15) 60%,rgba(0,0,0,.6))}
-header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px max(5vw,16px)}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:max(16px,env(safe-area-inset-top)) max(5vw,16px) 16px}
 .links{display:flex;gap:6px;align-items:center}
 .brand{font-weight:600;font-size:22px;letter-spacing:-.5px;line-height:1;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.3)}.brand i{font-style:normal;color:#f6c25b;margin:0 .5px}
 @media(max-width:360px){.brand{font-size:19px}}
@@ -97,7 +103,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 /* картинка */
 .shot{display:block;width:auto;max-width:100%;max-height:62dvh;margin:0 auto 14px;border-radius:16px;-webkit-touch-callout:default;user-select:auto}
 .wait{height:40dvh;display:grid;place-items:center;color:var(--mut)}
-body.tight header{padding-top:8px;padding-bottom:6px}body.tight main{padding-top:2px;padding-bottom:2px}body.tight .card{padding:14px 14px 8px}body.tight .tag{margin-bottom:8px}body.tight .ar{margin-bottom:10px}body.tight .tr{margin-bottom:8px}body.tight .by,body.tight .sub{margin-top:2px}body.tight .tools{margin-top:0}body.tight .ti{height:38px}body.tight footer{padding-top:6px;gap:6px}body.tight .note{font-size:11.5px}body.tight .note+.note{display:none}body.tight .go,body.tight .fact{min-height:48px}
+body.tight header{padding-top:max(8px,env(safe-area-inset-top));padding-bottom:6px}body.tight main{padding-top:2px;padding-bottom:2px}body.tight .card{padding:14px 14px 8px}body.tight .tag{margin-bottom:8px}body.tight .ar{margin-bottom:10px}body.tight .tr{margin-bottom:8px}body.tight .by,body.tight .sub{margin-top:2px}body.tight .tools{margin-top:0}body.tight .ti{height:38px}body.tight footer{padding-top:6px;gap:6px}body.tight .note{font-size:11.5px}body.tight .note+.note{display:none}body.tight .go,body.tight .fact{min-height:48px}
 .in{animation:in .6s ease}
 @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.in{animation:none}.bg{transition:none}}
