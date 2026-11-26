@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tanayat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: тихий, созерцательный, как обои в Sajda
+   IDEA: картина маслом — каждый аят на своём холсте
+   PICTURE: полноэкранные «масляные» пейзажи из SVG с фактурой мазков
+   COLOUR and TYPE: цвета картины; белый текст на мягком затемнении; Amiri + Inter
+   LAYOUT: одна колонка по центру, стеклянная карточка, кнопки внизу */
+:root{color-scheme:dark;--mut:rgba(255,255,255,.72);--glass:rgba(10,12,20,.32);--edge:rgba(255,255,255,.16);--ok:#7fe0b8}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:#0b0f1c;color:#fff;font:16px/1.6 Inter,system-ui,sans-serif;overflow-x:clip;display:flex;flex-direction:column;min-height:100dvh}
+.bg{position:fixed;inset:0;z-index:-2;transition:opacity 1s ease}
+.bg svg,.bg img{width:100%;height:100%;display:block;object-fit:cover}
+.shade{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.05) 30%,rgba(0,0,0,.15) 60%,rgba(0,0,0,.6))}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px max(5vw,16px)}
+.links{display:flex;gap:6px;align-items:center}
+.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:18px;letter-spacing:.2px;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.3)}.brand .logo{width:30px;height:30px;flex:none}
+@media(max-width:380px){.brand span{display:none}}
+.chip{font:500 14px Inter,sans-serif;color:#fff;text-decoration:none;background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:99px;padding:0 13px;min-height:38px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.lang{display:flex;background:var(--glass);border:1px solid var(--edge);border-radius:99px;padding:3px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.lang button{font:600 13px Inter,sans-serif;color:var(--mut);background:none;border:0;border-radius:99px;min-width:40px;min-height:32px;cursor:pointer}
+.lang button.on{background:#fff;color:#111}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:8px max(5vw,16px)}
+.card{max-width:640px;width:100%;text-align:center;background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);border-radius:28px;padding:clamp(22px,5vw,40px) clamp(18px,5vw,40px) 16px}
+.tag{display:inline-block;font-size:13px;font-weight:600;color:#111;background:#fff;border-radius:99px;padding:3px 12px;margin-bottom:16px}
+.ar{font-family:Amiri,serif;font-size:clamp(28px,6.5vw,42px);line-height:1.9;direction:rtl;margin:0 0 20px;text-wrap:balance;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.tr{font-size:clamp(17px,2.6vw,20px);line-height:1.55;margin:0 0 16px;text-wrap:balance}
+.ref{font-size:14px;color:var(--mut);margin:0}
+.ref a{color:var(--mut);text-underline-offset:3px}
+.sub{font-size:13px;color:var(--mut);margin:6px 0 0}
+.sub button{font:inherit;color:#fff;background:none;border:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px}
+.tools{display:flex;justify-content:center;gap:4px;margin-top:8px}
+.ti{width:44px;height:44px;border-radius:50%;border:0;background:none;color:var(--mut);cursor:pointer;display:grid;place-items:center}
+.ti:hover{background:rgba(255,255,255,.1);color:#fff}
+.ti svg{width:20px;height:20px}
+footer{padding:10px max(5vw,20px) max(22px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:12px}
+.row{display:flex;align-items:center;gap:12px}
+.ic{width:54px;height:54px;border-radius:50%;border:1px solid var(--edge);background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;cursor:pointer;display:grid;place-items:center;flex:none}
+.ic svg{width:22px;height:22px}
+.ic.on{background:#fff;color:#111}
+.go{font:600 16px Inter,sans-serif;background:#fff;color:#111;border:0;border-radius:99px;padding:0 30px;min-height:54px;cursor:pointer;transition:transform .15s;white-space:nowrap}
+.go:active,.ic:active{transform:scale(.96)}
+.note{font-size:12.5px;color:var(--mut);text-align:center;max-width:46ch;margin:0}
+button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.toast{z-index:9;position:fixed;left:50%;top:76px;transform:translateX(-50%);background:#fff;color:#111;font-size:14px;padding:8px 16px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap}
+.toast.on{opacity:1}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:5;touch-action:manipulation}
+.sheet.open{display:flex}
+.panel{background:#12151f;border:1px solid var(--edge);border-radius:26px 26px 0 0;padding:18px 22px max(24px,env(safe-area-inset-bottom));max-width:520px;width:100%;max-height:94dvh;overflow:auto}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--edge);margin:0 auto 16px}
+.panel h2{font-size:22px;margin:0 0 8px;line-height:1.2}
+.muted{margin:0 0 14px;color:var(--mut)}
+.pct{display:flex;align-items:center;gap:14px;margin:6px 0 18px}
+.pct b{flex:none;font-size:40px;line-height:1;color:var(--ok)}
+.btn{display:flex;justify-content:center;align-items:center;width:100%;min-height:52px;border-radius:14px;font:600 16px Inter,sans-serif;text-decoration:none;border:0;cursor:pointer}
+.btn.pri{background:#fff;color:#111;margin-bottom:10px}
+.btn.sec{background:transparent;color:#fff;border:1px solid var(--edge)}
+.kaspi{text-align:center;border:1px solid var(--edge);border-radius:16px;padding:16px;margin-bottom:10px}.kaspi .kl{display:inline-block;background:#f14635;color:#fff;font-weight:700;font-size:13px;border-radius:8px;padding:2px 10px;margin-bottom:8px}.kaspi b{display:block;font-size:26px;letter-spacing:.5px;margin-bottom:12px;white-space:nowrap}.kaspi .muted{margin:4px 0 0;font-size:14px}
+.soon{border:1px dashed var(--edge);border-radius:14px;padding:12px;text-align:center;color:var(--mut);margin-bottom:10px}
+/* зикр */
+.zk .panel{text-align:center}
+.segs{display:flex;gap:6px;margin:0 auto 6px;max-width:260px}
+.segs i{flex:1;height:5px;border-radius:9px;background:rgba(255,255,255,.14);overflow:hidden}
+.segs i b{display:block;height:100%;background:var(--ok);transition:width .2s}
+.stage{font-size:13px;color:var(--mut);margin:0 0 14px}
+.zar{font-family:Amiri,serif;font-size:38px;line-height:1.5;margin:0;direction:rtl;color:#fff}
+.long .zar{font-size:24px;line-height:1.8}.long .ztr{font-size:15px;line-height:1.5;margin-bottom:4px}.long .zru{font-size:14px}
+.ztr{font-size:19px;font-weight:600;margin:0;color:#fff}
+.zru{color:var(--mut);margin:0 0 16px}
+.tap{position:relative;width:min(230px,58vw);aspect-ratio:1;margin:0 auto 14px;border-radius:50%;border:0;background:radial-gradient(circle at 50% 35%,#24304a,#0f1422);color:#fff;cursor:pointer;display:grid;place-items:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .08s}
+.tap.press{transform:scale(.97)}
+.tap,.tap *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.tap svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.tap .n{font-size:56px;font-weight:600;line-height:1}
+.tap .of{font-size:14px;color:var(--mut)}
+.fin{color:var(--ok);font-weight:600;min-height:24px;margin:0 0 10px}
+.zrow{display:flex;gap:10px}.zrow .btn{flex:1}
+/* картинка */
+.shot{display:block;width:auto;max-width:100%;max-height:62dvh;margin:0 auto 14px;border-radius:16px;-webkit-touch-callout:default;user-select:auto}
+.wait{height:40dvh;display:grid;place-items:center;color:var(--mut)}
+.in{animation:in .6s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.in{animation:none}.bg{transition:none}}
+@media(max-width:400px){.chip{padding:0 11px;font-size:13px}.go{padding:0 22px}}
+</style>
+</head>
+<body>
+<div class="bg" id="bgA"></div><div class="bg" id="bgB" style="opacity:0"></div><div class="shade"></div>
+
+<header>
+  <div class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 22a10 10 0 0 1 20 0Z" fill="#f6c25b"/><g stroke="#f6c25b" stroke-width="2" stroke-linecap="round"><path d="M16 6v4M7 11l2.6 2.6M25 11l-2.6 2.6M3 18h3M26 18h3"/></g><path d="M2 24h28" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M8 28h16" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".5"/></svg><span>Tanayat</span></div>
+  <div class="links">
+  <div class="lang" role="group" aria-label="Язык"><button type="button" data-l="kz">KZ</button><button type="button" data-l="ru">RU</button></div>
+    <button class="chip" id="zbtn" type="button" data-t="zikr">Зикр</button>
+    <button class="chip" id="don" type="button" aria-label="Донат">♡</button>
+  </div>
+</header>
+
+<main><article class="card" id="card" aria-live="polite"></article></main>
+
+<footer>
+  <div class="row">
+    <button class="go" id="go" type="button" data-t="random">Случайный аят</button>
+  </div>
+  <p class="note" id="note"></p>
+  <p class="note"><a href="https://apps.apple.com/app/id517254891" target="_blank" rel="noopener" style="color:inherit">Sajda</a></p>
+</footer>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="dh">
+  <div class="panel">
+    <div class="grab"></div>
+    <h2 id="dh" data-t="dTitle"></h2>
+    <p class="muted" data-t="dText"></p>
+    <div class="pct"><b>30%</b><span data-t="dPct"></span></div>
+    <div id="donSlot"></div>
+    <button class="btn sec" data-close type="button" data-t="close"></button>
+  </div>
+</div>
+
+<div class="sheet zk" id="zsheet" role="dialog" aria-modal="true" aria-label="Зикр">
+  <div class="panel">
+    <div class="grab"></div>
+    <div class="segs" id="segs"></div>
+    <p class="stage" id="stage"></p>
+    <p class="zar" lang="ar" id="zar"></p>
+    <p class="ztr" id="ztr"></p>
+    <p class="zru" id="zru"></p>
+    <button class="tap" id="tap" type="button">
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="3"/><circle id="ring" cx="50" cy="50" r="46" fill="none" stroke="#7fe0b8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transition:stroke-dashoffset .2s"/></svg>
+      <span><span class="n" id="zn">0</span><br><span class="of" id="zof"></span></span>
+    </button>
+    <p class="fin" id="fin"></p>
+    <div class="zrow"><button class="btn sec" id="zreset" type="button" data-t="reset"></button><button class="btn sec" data-close type="button" data-t="close"></button></div>
+  </div>
+</div>
+
+<div class="sheet" id="isheet" role="dialog" aria-modal="true" aria-label="Картинка">
+  <div class="panel">
+    <div class="grab"></div>
+    <div id="islot"></div>
+    <button class="btn pri" id="isave" type="button" data-t="save" hidden></button>
+    <p class="muted" style="text-align:center" id="ihint" data-t="hold"></p>
+    <button class="btn sec" data-close type="button" data-t="close"></button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+{
+/* Вставьте сюда свою ссылку для пожертвований (Kaspi, CloudTips и т.п.) */
+const KASPI='+7 771 425 3770';
+const DAILY_HOUR=10;
+
+const S={1:'Аль-Фатиха',2:'Аль-Бакара',3:'Алю Имран',4:'Ан-Ниса',5:'Аль-Маида',7:'Аль-Араф',9:'Ат-Тауба',12:'Юсуф',13:'Ар-Рад',14:'Ибрахим',16:'Ан-Нахль',17:'Аль-Исра',20:'Та Ха',21:'Аль-Анбия',24:'Ан-Нур',25:'Аль-Фуркан',29:'Аль-Анкабут',31:'Лукман',39:'Аз-Зумар',40:'Гафир',41:'Фуссылят',49:'Аль-Худжурат',50:'Каф',55:'Ар-Рахман',57:'Аль-Хадид',65:'Ат-Таляк',67:'Аль-Мульк',89:'Аль-Фаджр',93:'Ад-Духа',94:'Аш-Шарх',96:'Аль-Алак',99:'Аз-Зальзаля',103:'Аль-Аср',112:'Аль-Ихлас'};
+const A=[
+['2:286','لَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا وُسْعَهَا','Аллах не возлагает на душу больше, чем она способна вынести.','Алла ешкімге шамасы келмейтін ауыртпалық жүктемейді.'],
+['94:5-6','فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا   ·   إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا','Воистину, вместе с тяготой приходит облегчение. Воистину, вместе с тяготой приходит облегчение.','Расында, қиындықпен бірге жеңілдік бар. Расында, қиындықпен бірге жеңілдік бар.'],
+['2:152','فَٱذْكُرُونِىٓ أَذْكُرْكُمْ وَٱشْكُرُوا۟ لِى وَلَا تَكْفُرُونِ','Поминайте Меня — и Я помяну вас. Будьте благодарны Мне и не будьте неблагодарны.','Мені еске алыңдар — Мен де сендерді еске аламын. Маған шүкір етіңдер, күпірлік етпеңдер.'],
+['2:186','وَإِذَا سَأَلَكَ عِبَادِى عَنِّى فَإِنِّى قَرِيبٌ','Когда Мои рабы спрашивают тебя обо Мне — Я близко.','Құлдарым сенен Мен туралы сұраса — Мен жақынмын.'],
+['13:28','أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ','Поистине, в поминании Аллаха сердца находят покой.','Біліңдер, жүректер Алланы еске алумен тыныштық табады.'],
+['39:53','لَا تَقْنَطُوا۟ مِن رَّحْمَةِ ٱللَّهِ','Не отчаивайтесь в милости Аллаха.','Алланың рахымынан үміт үзбеңдер.'],
+['65:3','وَمَن يَتَوَكَّلْ عَلَى ٱللَّهِ فَهُوَ حَسْبُهُۥٓ','Кто уповает на Аллаха — тому Его достаточно.','Кім Аллаға тәуекел етсе, оған Алланың Өзі жеткілікті.'],
+['2:153','يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱسْتَعِينُوا۟ بِٱلصَّبْرِ وَٱلصَّلَوٰةِ ۚ إِنَّ ٱللَّهَ مَعَ ٱلصَّٰبِرِينَ','О верующие! Ищите помощи в терпении и молитве. Воистину, Аллах — с терпеливыми.','Әй, иман келтіргендер! Сабыр және намаз арқылы көмек сұраңдар. Расында, Алла сабырлылармен бірге.'],
+['40:60','ٱدْعُونِىٓ أَسْتَجِبْ لَكُمْ','Взывайте ко Мне — и Я отвечу вам.','Маған дұға қылыңдар — Мен сендерге жауап беремін.'],
+['50:16','وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ ٱلْوَرِيدِ','Мы ближе к человеку, чем его шейная вена.','Біз адамға оның күретамырынан да жақынбыз.'],
+['3:139','وَلَا تَهِنُوا۟ وَلَا تَحْزَنُوا۟ وَأَنتُمُ ٱلْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ','Не падайте духом и не печальтесь — вы выше, если вы верующие.','Әлсіремеңдер де, қайғырмаңдар — егер иманды болсаңдар, сендер жоғарысыңдар.'],
+['9:40','لَا تَحْزَنْ إِنَّ ٱللَّهَ مَعَنَا','Не печалься: Аллах с нами.','Қайғырма: Алла бізбен бірге.'],
+['20:114','وَقُل رَّبِّ زِدْنِى عِلْمًا','И говори: «Господи, прибавь мне знания».','Әрі: «Раббым, білімімді арттыра гөр», — де.'],
+['20:25-26','رَبِّ ٱشْرَحْ لِى صَدْرِى   ·   وَيَسِّرْ لِىٓ أَمْرِى','Господи, раскрой мне грудь и облегчи мне моё дело.','Раббым, көкірегімді кеңіт әрі ісімді жеңілдет.'],
+['2:201','رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةً وَفِى ٱلْءَاخِرَةِ حَسَنَةً وَقِنَا عَذَابَ ٱلنَّارِ','Господь наш! Даруй нам благо в этом мире и благо в вечном мире и защити нас от мук Огня.','Раббымыз! Бізге осы дүниеде де, ақиретте де игілік бер және бізді От азабынан сақта.'],
+['14:7','لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ','Если будете благодарны — Я непременно дам вам ещё больше.','Егер шүкір етсеңдер, Мен сендерге одан да көп беремін.'],
+['41:34','ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ','Отвечай на зло тем, что лучше.','Жамандыққа ең жақсы нәрсемен жауап бер.'],
+['49:13','إِنَّ أَكْرَمَكُمْ عِندَ ٱللَّهِ أَتْقَىٰكُمْ','Самый достойный из вас перед Аллахом — самый богобоязненный.','Алланың алдында ең құрметтілерің — ең тақуаларың.'],
+['49:12','وَلَا يَغْتَب بَّعْضُكُم بَعْضًا','И не злословьте друг о друге за спиной.','Бір-біріңнің сыртыңнан ғайбат айтпаңдар.'],
+['17:23','وَبِٱلْوَٰلِدَيْنِ إِحْسَٰنًا','И делайте добро родителям.','Ата-анаға жақсылық жасаңдар.'],
+['17:24','رَّبِّ ٱرْحَمْهُمَا كَمَا رَبَّيَانِى صَغِيرًا','Господи, помилуй их, как они растили меня, когда я был маленьким.','Раббым, олар мені кішкентайымнан тәрбиелегендей, оларға рахым ет.'],
+['2:256','لَآ إِكْرَاهَ فِى ٱلدِّينِ','Нет принуждения в религии.','Дінде зорлау жоқ.'],
+['5:32','وَمَنْ أَحْيَاهَا فَكَأَنَّمَآ أَحْيَا ٱلنَّاسَ جَمِيعًا','Кто сохранил одну жизнь — словно сохранил жизнь всем людям.','Кім бір жанды құтқарса, бүкіл адамзатты құтқарғандай болады.'],
+['99:7','فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُۥ','Кто сделал добро весом хоть с пылинку — увидит его.','Кім тозаңдай жақсылық жасаса, соны көреді.'],
+['103:1-2','وَٱلْعَصْرِ   ·   إِنَّ ٱلْإِنسَٰنَ لَفِى خُسْرٍ','Клянусь временем! Воистину, человек — в убытке…','Заманға серт! Расында, адам зиянда…'],
+['93:3','مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ','Твой Господь не оставил тебя и не отверг.','Раббың сені тастамады әрі жек көрмеді.'],
+['93:5','وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰٓ','Твой Господь непременно одарит тебя — и ты будешь доволен.','Раббың саған әлі де береді — сонда сен риза боласың.'],
+['89:27-28','يَٰٓأَيَّتُهَا ٱلنَّفْسُ ٱلْمُطْمَئِنَّةُ   ·   ٱرْجِعِىٓ إِلَىٰ رَبِّكِ رَاضِيَةً مَّرْضِيَّةً','О душа успокоенная! Вернись к своему Господу — довольной и снискавшей Его довольство.','Әй, тыныштық тапқан жан! Раббыңа разы болған әрі разылыққа бөленген күйде орал.'],
+['112:1-2','قُلْ هُوَ ٱللَّهُ أَحَدٌ   ·   ٱللَّهُ ٱلصَّمَدُ','Скажи: «Он — Аллах Единый. Аллах Вечный, ни в ком не нуждающийся».','Айт: «Ол — Алла, Жалғыз. Алла — ешкімге мұқтаж емес, Мәңгі».'],
+['1:5','إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ','Тебе одному мы поклоняемся и у Тебя одного просим помощи.','Тек Саған ғана құлшылық етеміз және тек Сенен ғана жәрдем сұраймыз.'],
+['1:6','ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ','Веди нас прямым путём.','Бізді тура жолға сала гөр.'],
+['24:35','ٱللَّهُ نُورُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ','Аллах — свет небес и земли.','Алла — көктер мен жердің нұры.'],
+['55:13','فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ','Какую же из милостей вашего Господа вы отрицаете?','Ендеше, Раббыларыңның қай нығметін жалғанға шығарасыңдар?'],
+['3:8','رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا','Господь наш! Не дай нашим сердцам уклониться после того, как Ты вывел нас на прямой путь.','Раббымыз! Бізді тура жолға салғаннан кейін жүректерімізді бұра көрме.'],
+['21:87','لَّآ إِلَٰهَ إِلَّآ أَنتَ سُبْحَٰنَكَ إِنِّى كُنتُ مِنَ ٱلظَّٰلِمِينَ','Нет божества, кроме Тебя. Пречист Ты! Воистину, я был несправедлив. (Мольба Юнуса во чреве кита.)','Сенен басқа құдай жоқ. Сен пәксің! Расында, мен әділетсіздерден болдым. (Жүністің балықтың ішіндегі дұғасы.)'],
+['12:87','وَلَا تَا۟يْـَٔسُوا۟ مِن رَّوْحِ ٱللَّهِ','И не теряйте надежды на милость Аллаха.','Алланың мейірімінен түңілмеңдер.'],
+['29:69','وَٱلَّذِينَ جَٰهَدُوا۟ فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا','Тех, кто старается ради Нас, Мы непременно поведём Нашими путями.','Біз үшін тырысқандарды Өз жолдарымызға міндетті түрде бастаймыз.'],
+['2:216','وَعَسَىٰٓ أَن تَكْرَهُوا۟ شَيْـًٔا وَهُوَ خَيْرٌ لَّكُمْ','Быть может, вам не нравится то, что на самом деле для вас благо.','Мүмкін, сендер бір нәрсені жақтырмайсыңдар, ал ол сендер үшін жақсы.'],
+['16:128','إِنَّ ٱللَّهَ مَعَ ٱلَّذِينَ ٱتَّقَوا۟ وَّٱلَّذِينَ هُم مُّحْسِنُونَ','Воистину, Аллах — с теми, кто богобоязнен и творит добро.','Расында, Алла тақуалармен және жақсылық жасаушылармен бірге.'],
+['25:63','وَعِبَادُ ٱلرَّحْمَٰنِ ٱلَّذِينَ يَمْشُونَ عَلَى ٱلْأَرْضِ هَوْنًا','Рабы Милостивого — те, кто ходит по земле смиренно.','Рахманның құлдары — жер бетінде кішіпейілдікпен жүретіндер.'],
+['31:18','وَلَا تَمْشِ فِى ٱلْأَرْضِ مَرَحًا','И не ходи по земле с высокомерием.','Жер бетінде менмендікпен жүрме.'],
+['57:4','وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ','Он с вами, где бы вы ни были.','Қайда болсаңдар да, Ол сендермен бірге.'],
+['3:159','فَإِذَا عَزَمْتَ فَتَوَكَّلْ عَلَى ٱللَّهِ','Когда примешь решение — положись на Аллаха.','Бір іске бел байлағанда, Аллаға тәуекел ет.'],
+['7:56','إِنَّ رَحْمَتَ ٱللَّهِ قَرِيبٌ مِّنَ ٱلْمُحْسِنِينَ','Милость Аллаха близка к тем, кто творит добро.','Алланың рахымы жақсылық жасаушыларға жақын.'],
+['96:1','ٱقْرَأْ بِٱسْمِ رَبِّكَ ٱلَّذِى خَلَقَ','Читай во имя твоего Господа, который сотворил всё.','Жаратқан Раббыңның атымен оқы.'],
+['2:255','ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ','Аллах — нет божества, кроме Него, Живого, Поддерживающего жизнь всего сущего.','Алла — Одан басқа құдай жоқ. Ол — Тірі, бәрін басқарып тұрушы.'],
+['67:2','ٱلَّذِى خَلَقَ ٱلْمَوْتَ وَٱلْحَيَوٰةَ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا','Он сотворил смерть и жизнь, чтобы испытать, чьи дела будут лучше.','Ол қайсыларыңның амалдарың жақсырақ екенін сынау үшін өлім мен өмірді жаратты.'],
+['4:28','يُرِيدُ ٱللَّهُ أَن يُخَفِّفَ عَنكُمْ ۚ وَخُلِقَ ٱلْإِنسَٰنُ ضَعِيفًا','Аллах желает облегчить вам, ведь человек сотворён слабым.','Алла сендерге жеңілдік қалайды, өйткені адам әлсіз етіп жаратылған.']
+];
+
+const SK={1:'Фатиха',2:'Бақара',3:'Әли Имран',4:'Ниса',5:'Мәида',7:'Ағраф',9:'Тәубе',12:'Юсуф',13:'Рағд',14:'Ибраһим',16:'Нахл',17:'Исра',20:'Таһа',21:'Әнбия',24:'Нұр',25:'Фурқан',29:'Анкабут',31:'Лұқман',39:'Зұмар',40:'Ғафир',41:'Фуссилат',49:'Хужурат',50:'Қаф',55:'Рахман',57:'Хадид',65:'Талақ',67:'Мүлк',89:'Фәжр',93:'Духа',94:'Инширах',96:'Алақ',99:'Зілзала',103:'Аср',112:'Ықылас'};
+
+
+const T={
+ru:{zikr:'Зикр',random:'Случайный аят',daily:'Аят дня',back:'Вернуться к аяту дня',next:'Следующий аят дня через',h:'ч',m:'мин',note:'Смысловой перевод — простой пересказ значения, не канонический перевод.',playing:'Звучит смысл по-русски. Чтение на арабском — по ссылке под аятом.',copy:'Скопировать',img:'Картинка для сторис',copied:'Скопировано',nocopy:'Не удалось скопировать',listen:'Слушать',stop:'Остановить',dTitle:'Поддержать проект',dText:'Пожертвования помогают развивать сайт и добавлять новые аяты.',dPct:'всех пожертвований направляется на благотворительность и помощь мечетям',soon:'Ссылка для пожертвований скоро появится',give:'Пожертвовать',kcopy:'Скопировать номер',khow:'Откройте Kaspi → Переводы → «Клиенту Kaspi» и вставьте номер. Любая сумма — садака.',close:'Закрыть',reset:'Сбросить',stage:'Этап',of:'из',fin:'МашаАллах! Зикр завершён — 100 раз.',now:'Теперь — ',hold:'Нажмите и удерживайте картинку, чтобы сохранить или отправить.',save:'Сохранить картинку',saved:'Картинка сохранена',declined:'Сохранение отменено',altai:'',making:'Рисуем картинку…',noimg:'Не удалось сделать картинку',quran:'Коран',bism:'Во имя Аллаха, Милостивого, Милосердного',dateL:'ru-RU',voice:'ru-RU'},
+kz:{zikr:'Зікір',random:'Кездейсоқ аят',daily:'Күннің аяты',back:'Күннің аятына оралу',next:'Келесі күннің аяты',h:'сағ',m:'мин',note:'Мағыналық аударма — мағынаның қарапайым баяндалуы, канондық аударма емес.',playing:'Мағынасы қазақша оқылуда. Арабша оқылуы — аяттың астындағы сілтемеде.',copy:'Көшіру',img:'Сторис үшін сурет',copied:'Көшірілді',nocopy:'Көшіру мүмкін болмады',listen:'Тыңдау',stop:'Тоқтату',dTitle:'Жобаны қолдау',dText:'Қайырымдылық сайтты дамытуға және жаңа аяттар қосуға көмектеседі.',dPct:'барлық түскен қаражаттың қайырымдылыққа және мешіттерге көмекке жіберіледі',soon:'Қайырымдылық сілтемесі жақында пайда болады',give:'Қолдау көрсету',kcopy:'Нөмірді көшіру',khow:'Kaspi → Аударымдар → «Kaspi клиентіне» бөліміне нөмірді қойыңыз. Кез келген сома — садақа.',close:'Жабу',reset:'Қайта бастау',stage:'Кезең',of:'/',fin:'МашаАллаһ! Зікір аяқталды — 100 рет.',now:'Енді — ',hold:'Сақтау немесе жіберу үшін суретті басып тұрыңыз.',save:'Суретті сақтау',saved:'Сурет сақталды',declined:'Сақтау тоқтатылды',altai:'Халифа Алтай аудармасы',making:'Сурет салынуда…',noimg:'Сурет жасау мүмкін болмады',quran:'Құран',bism:'Аса Қамқор, ерекше Мейірімді Алланың атымен',dateL:'kk-KZ',voice:'kk-KZ'}};
+let L='kz';try{const v=localStorage.getItem('lang');if(v==='kz'||v==='ru')L=v}catch(e){}
+const t=k=>T[L][k];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const toast=$('toast');
+function show(s){toast.textContent=s;toast.classList.add('on');clearTimeout(show.t);show.t=setTimeout(()=>toast.classList.remove('on'),1800)}
+
+let seed=1;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const grad=(id,...stops)=>`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">${stops.map((c,i)=>`<stop offset="${i/(stops.length-1)}" stop-color="${c}"/>`).join('')}</linearGradient>`;
+const rgrad=(id,c1,c2)=>`<radialGradient id="${id}"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}" stop-opacity="0"/></radialGradient>`;
+const sky=(...c)=>`${grad('g',...c)}<rect width="400" height="800" fill="url(#g)"/>`;
+const ridge=(y,amp,col,n=7)=>{let d=`M0 ${y}`;for(let i=1;i<=n;i++){const x=i*400/n;d+=` Q${x-200/n} ${y-amp*(0.4+rnd())} ${x} ${y+amp*(rnd()-.5)*.6}`}return `<path d="${d} L400 800 L0 800Z" fill="${col}"/>`};
+const peaks=(y,col,snow,pts)=>{let d=`M0 ${y}`;pts.forEach(([x,h])=>{d+=` L${x} ${y-h}`});d+=` L400 ${y} L400 800 L0 800Z`;let s='';if(snow)pts.forEach(([x,h],i)=>{if(h>120)s+=`<path d="M${x-h*.18} ${y-h*.78} L${x} ${y-h} L${x+h*.2} ${y-h*.76} L${x+h*.08} ${y-h*.82} L${x-h*.05} ${y-h*.74}Z" fill="${snow}"/>`});return `<path d="${d}" fill="${col}"/>${s}`};
+const stars=(n,h)=>Array.from({length:n},()=>`<circle cx="${(rnd()*400).toFixed(1)}" cy="${(rnd()*h).toFixed(1)}" r="${(rnd()*1.4+.3).toFixed(2)}" fill="#fff" opacity="${(rnd()*.7+.3).toFixed(2)}"/>`).join('');
+const clouds=(n,y0,y1,col,op)=>Array.from({length:n},()=>{const x=rnd()*400,y=y0+rnd()*(y1-y0),w=60+rnd()*90;return `<ellipse cx="${x}" cy="${y}" rx="${w}" ry="${10+rnd()*16}" fill="${col}" opacity="${op}"/><ellipse cx="${x-w*.3}" cy="${y-8}" rx="${w*.45}" ry="${12+rnd()*10}" fill="${col}" opacity="${op*.8}"/>`}).join('');
+const rays=(cx,cy,col,n=9,spread=.16)=>Array.from({length:n},(_,i)=>{const a=(i-(n-1)/2)*spread+Math.PI/2,w=.03+rnd()*.02;return `<polygon points="${cx},${cy} ${cx+Math.cos(a-w)*900},${cy+Math.sin(a-w)*900} ${cx+Math.cos(a+w)*900},${cy+Math.sin(a+w)*900}" fill="${col}" opacity="${.07+rnd()*.1}"/>`}).join('');
+const moon=(x,y,r,c='#f3ecd6')=>`<circle cx="${x}" cy="${y}" r="${r*3}" fill="url(#mg)"/><path d="M${x} ${y-r} A${r} ${r} 0 1 0 ${x+r*.82} ${y+r*.58} A${r*.82} ${r*.82} 0 1 1 ${x} ${y-r}Z" fill="${c}"/>`;
+const crescentTop=(x,y,c)=>`<line x1="${x}" y1="${y}" x2="${x}" y2="${y-14}" stroke="${c}" stroke-width="1.6"/><path d="M${x} ${y-22} a5 5 0 1 0 4 8 a4 4 0 1 1 -4 -8Z" fill="${c}"/>`;
+/* купол: луковичный (onion) или полусфера */
+const dome=(cx,y,r,c,hi,onion=true,fin='#e8c66a')=>{const d=onion?`M${cx-r} ${y} C${cx-r*1.1} ${y-r*1.1} ${cx-r*.35} ${y-r*1.35} ${cx} ${y-r*1.85} C${cx+r*.35} ${y-r*1.35} ${cx+r*1.1} ${y-r*1.1} ${cx+r} ${y}Z`:`M${cx-r} ${y} A${r} ${r*.95} 0 0 1 ${cx+r} ${y}Z`;return `<path d="${d}" fill="${c}"/><ellipse cx="${cx-r*.42}" cy="${y-r*(onion?.6:.45)}" rx="${r*.16}" ry="${r*(onion?.45:.3)}" fill="${hi}" opacity=".45"/><rect x="${cx-r*1.02}" y="${y-2}" width="${r*2.04}" height="5" fill="${hi}" opacity=".5"/>${crescentTop(cx,y-(onion?r*1.85:r*.95),fin)}`};
+const minaret=(x,y,h,w,c,hi,cap='#e8c66a',cone=true)=>`<rect x="${x-w/2}" y="${y-h}" width="${w}" height="${h}" fill="${c}"/><rect x="${x-w/2}" y="${y-h}" width="${w*.3}" height="${h}" fill="${hi}" opacity=".35"/><rect x="${x-w*.85}" y="${y-h*.72}" width="${w*1.7}" height="${w*.45}" fill="${c}"/><rect x="${x-w*.85}" y="${y-h*.42}" width="${w*1.7}" height="${w*.35}" fill="${c}"/>${cone?`<path d="M${x-w*.6} ${y-h} L${x} ${y-h-w*3.2} L${x+w*.6} ${y-h}Z" fill="${cap}"/>`:`<path d="M${x-w*.6} ${y-h} Q${x} ${y-h-w*2} ${x+w*.6} ${y-h}Z" fill="${cap}"/>`}${crescentTop(x,y-h-(cone?w*3.2:w*1.3),cap)}`;
+const arches=(x,y,w,h,n,c,glow)=>{let s=`<rect x="${x}" y="${y-h}" width="${w}" height="${h}" fill="${c}"/>`;const aw=w/n;for(let i=0;i<n;i++){const ax=x+i*aw+aw*.18,ww=aw*.64;s+=`<path d="M${ax} ${y} L${ax} ${y-h*.55} Q${ax+ww/2} ${y-h*.95} ${ax+ww} ${y-h*.55} L${ax+ww} ${y}Z" fill="${glow}"/>`}return s};
+const yurt=(cx,y,w,c,dark,door)=>`<path d="M${cx-w/2} ${y} L${cx-w/2} ${y-w*.42} Q${cx} ${y-w*.95} ${cx+w/2} ${y-w*.42} L${cx+w/2} ${y}Z" fill="${c}"/><path d="M${cx-w/2} ${y-w*.42} Q${cx} ${y-w*.95} ${cx+w/2} ${y-w*.42}" fill="none" stroke="${dark}" stroke-width="3"/><path d="M${cx-w/2} ${y-w*.3} L${cx+w/2} ${y-w*.3}" stroke="${dark}" stroke-width="5" opacity=".55"/>${Array.from({length:6},(_,i)=>`<path d="M${cx-w/2+i*w/5} ${y-w*.3} L${cx-w/2+(i+1)*w/5} ${y-w*.05} M${cx-w/2+(i+1)*w/5} ${y-w*.3} L${cx-w/2+i*w/5} ${y-w*.05}" stroke="${dark}" stroke-width="1.2" opacity=".35"/>`).join('')}<rect x="${cx-w*.09}" y="${y-w*.3}" width="${w*.18}" height="${w*.3}" fill="${door}"/><ellipse cx="${cx}" cy="${y-w*.74}" rx="${w*.1}" ry="${w*.03}" fill="${dark}"/>`;
+const spruce=(x,y,h,c)=>`<path d="M${x} ${y-h} L${x+h*.18} ${y-h*.6} L${x+h*.09} ${y-h*.6} L${x+h*.26} ${y-h*.25} L${x+h*.12} ${y-h*.25} L${x+h*.3} ${y} L${x-h*.3} ${y} L${x-h*.12} ${y-h*.25} L${x-h*.26} ${y-h*.25} L${x-h*.09} ${y-h*.6} L${x-h*.18} ${y-h*.6}Z" fill="${c}"/>`;
+const palm=(x,y,h,c)=>{let s=`<path d="M${x-3} ${y} Q${x+8} ${y-h*.5} ${x+2} ${y-h} L${x+6} ${y-h} Q${x+12} ${y-h*.5} ${x+3} ${y}Z" fill="${c}"/>`;for(let i=0;i<7;i++){const a=-Math.PI+i*Math.PI/6,ex=x+4+Math.cos(a)*h*.42,ey=y-h+Math.sin(a)*h*.18+h*.12;s+=`<path d="M${x+4} ${y-h} Q${(x+4+ex)/2} ${y-h-h*.14} ${ex} ${ey} Q${(x+4+ex)/2} ${y-h-h*.05} ${x+4} ${y-h+3}Z" fill="${c}"/>`}return s};
+const crowd=(y0,y1,n,cols,rx=2.2)=>Array.from({length:n},()=>{const y=y0+rnd()*(y1-y0),s=.6+(y-y0)/(y1-y0+1)*.9;return `<ellipse cx="${(rnd()*400).toFixed(1)}" cy="${y.toFixed(1)}" rx="${(rx*s).toFixed(2)}" ry="${(rx*1.7*s).toFixed(2)}" fill="${cols[Math.floor(rnd()*cols.length)]}"/>`}).join('');
+const water=(y,c1,c2,glint)=>`${grad('w',c1,c2)}<rect y="${y}" width="400" height="${800-y}" fill="url(#w)"/>${Array.from({length:26},()=>`<rect x="${rnd()*400}" y="${y+6+rnd()*(790-y)}" width="${20+rnd()*60}" height="2" fill="${glint}" opacity="${.1+rnd()*.25}"/>`).join('')}`;
+
+const SCENES=[
+/* 0 Қазақ даласы: закат, юрты, кони */
+()=>`${sky('#28305e','#8a4a6a','#e9824a','#f7c766')}${clouds(5,100,300,'#ffc58a',.35)}<circle cx="300" cy="455" r="38" fill="#ffe6a6"/><circle cx="300" cy="455" r="110" fill="url(#mg)"/>${ridge(480,22,'#b9673e',5)}${ridge(520,18,'#9b5532',6)}<rect y="540" width="400" height="260" fill="#7a4a2a"/>${Array.from({length:40},()=>`<path d="M${rnd()*400} ${560+rnd()*230} l${-3+rnd()*6} -${6+rnd()*10}" stroke="#c99a52" stroke-width="1.4" opacity=".6"/>`).join('')}${yurt(110,610,110,'#efe4cf','#6b3b22','#ffcf7a')}${yurt(225,585,70,'#e6d6bb','#6b3b22','#ffcf7a')}<g fill="#3b2214">${[ [300,640],[335,650] ].map(([x,y])=>`<path d="M${x} ${y} l3 -18 q4 -12 20 -12 l16 0 q6 -10 12 -8 l-2 8 q-2 4 -6 6 l0 24 l-3 0 l-1 -18 l-14 0 l-2 18 l-3 0 l-1 -18 q-6 0 -8 -2 l-2 20Z"/>`).join('')}</g>`,
+/* 1 Алатау: снежные пики на рассвете, ели, мечеть */
+()=>`${sky('#2c4f8c','#7d9cc8','#f2c8a0','#f6e2c0')}${clouds(4,120,260,'#fff',.35)}${peaks(470,'#5f6f96','#f4f6fb',[[30,150],[95,230],[150,170],[215,260],[290,190],[350,230],[400,160]])}${peaks(520,'#44557c','#dfe6f2',[[60,110],[140,150],[230,120],[320,160],[400,100]])}${ridge(560,40,'#2e4a3e',6)}${Array.from({length:22},(_,i)=>spruce(i*19+rnd()*8,600+rnd()*20,60+rnd()*40,'#1f3a2e')).join('')}<rect y="610" width="400" height="190" fill="#1c3028"/>${dome(200,690,46,'#2fa3a6','#bdf4ef',false)}<rect x="140" y="690" width="120" height="70" fill="#e9e4da"/>${arches(140,760,120,60,4,'#e9e4da','#f6c873')}${minaret(118,760,150,10,'#efe9de','#fff','#2fa3a6')}${minaret(282,760,150,10,'#efe9de','#fff','#2fa3a6')}<rect y="755" width="400" height="45" fill="#16261f"/>`,
+/* 2 Ночная степь: полумесяц, юрта со светом */
+()=>`${sky('#03051a','#0b1240','#1d2a63','#2c3570')}${stars(170,560)}<path d="M-20 260 Q200 120 420 300" stroke="#cfd6ff" stroke-width="40" opacity=".05" fill="none"/>${moon(300,170,30)}${ridge(570,30,'#151b44',5)}${ridge(620,26,'#0f1436',6)}<rect y="640" width="400" height="160" fill="#0b0f2a"/>${yurt(170,690,130,'#c9c2b4','#2a2236','#ffb648')}<ellipse cx="170" cy="700" rx="50" ry="10" fill="#ffb648" opacity=".25"/>${yurt(300,670,60,'#a9a294','#2a2236','#ffb648')}`,
+/* 3 Мечеть в степном городе на закате (белые стены, бирюзовые купола) */
+()=>`${sky('#3a2f6e','#b05a7a','#f39a6a','#fbd38a')}${rays(200,520,'#ffe7b0',11,.14)}${clouds(5,120,320,'#ffd0a0',.3)}<rect y="560" width="400" height="240" fill="#6b4a5e"/>${dome(200,560,70,'#2aa6a9','#c8fff8',true)}${dome(120,600,30,'#2aa6a9','#c8fff8',true)}${dome(280,600,30,'#2aa6a9','#c8fff8',true)}<rect x="70" y="560" width="260" height="140" fill="#f4eee4"/><rect x="70" y="560" width="70" height="140" fill="#fff" opacity=".3"/>${arches(70,700,260,110,6,'#f4eee4','#f3b866')}${minaret(40,700,250,13,'#f6f1e8','#fff','#2aa6a9')}${minaret(360,700,250,13,'#f6f1e8','#fff','#2aa6a9')}${water(700,'#d08a78','#8a5468','#ffe2b0')}`,
+/* 4 Мекка: Кааба ночью, таваф, минареты и часовая башня */
+()=>`${sky('#05071a','#14183d','#2b2856','#4a3d63')}${stars(60,300)}<rect x="170" y="150" width="60" height="380" fill="#2a2a3c"/><rect x="178" y="110" width="44" height="60" fill="#33334a"/><path d="M190 110 L200 40 L210 110Z" fill="#d9b85c"/><circle cx="200" cy="215" r="20" fill="#f7f0d8"/><circle cx="200" cy="215" r="44" fill="url(#mg)"/><rect x="120" y="260" width="55" height="270" fill="#25253a"/><rect x="225" y="260" width="55" height="270" fill="#25253a"/>${Array.from({length:30},()=>`<rect x="${125+rnd()*150}" y="${270+rnd()*250}" width="3" height="5" fill="#ffd98a" opacity="${.4+rnd()*.5}"/>`).join('')}${minaret(40,560,280,12,'#e9e6dc','#fff','#e9e6dc')}${minaret(360,560,280,12,'#e9e6dc','#fff','#e9e6dc')}${minaret(90,560,220,10,'#dcd8cc','#fff','#dcd8cc')}${minaret(310,560,220,10,'#dcd8cc','#fff','#dcd8cc')}${arches(0,600,400,70,10,'#e4e0d4','#ffd590')}<rect y="600" width="400" height="200" fill="#ece8de"/><ellipse cx="200" cy="700" rx="230" ry="85" fill="#dcd6c8"/>${crowd(620,790,420,['#fff','#f2efe6','#e6e1d4','#cfc8b8'],2.4)}<path d="M168 610 L232 610 L240 600 L240 690 L232 700 L168 700 L160 690 L160 600Z" fill="#141416"/><path d="M160 615 L240 615 L240 628 L160 628Z" fill="#d6b45a"/><path d="M168 600 L240 600 L232 610 L160 610Z" fill="#26262a"/><rect x="214" y="640" width="14" height="34" fill="#c8a74e" opacity=".8"/>`,
+/* 5 Медина: Масджид ан-Набави, зелёный купол, зонты */
+()=>`${sky('#1f3a6e','#5a74a8','#e8a46e','#f6d08e')}${clouds(6,90,300,'#ffe0b0',.35)}${minaret(50,600,300,12,'#f1ece0','#fff','#f1ece0',false)}${minaret(350,600,300,12,'#f1ece0','#fff','#f1ece0',false)}${minaret(140,600,240,10,'#ebe5d8','#fff','#ebe5d8',false)}<rect x="60" y="520" width="280" height="90" fill="#efe9dc"/>${arches(60,610,280,80,7,'#efe9dc','#f4c77a')}${dome(250,520,44,'#2f8a4e','#9fe6b3',false,'#e8c66a')}<rect x="206" y="500" width="88" height="20" fill="#e9e2d2"/>${dome(130,525,24,'#d8d0bf','#fff',false,'#e8c66a')}<rect y="610" width="400" height="190" fill="#e8e2d4"/>${[30,110,190,270,350].map(x=>`<path d="M${x-48} 672 Q${x} 628 ${x+48} 672Z" fill="#f7f4ec"/><path d="M${x-48} 672 Q${x-24} 650 ${x} 646 L${x} 672Z" fill="#ddd6c6"/><rect x="${x-1.5}" y="672" width="3" height="60" fill="#bdb3a0"/>`).join('')}${crowd(700,790,160,['#fff','#2b2b2b','#e9e4d8','#555'],2.2)}`,
+/* 6 Арафат: гора Милости, лучи, паломники в белом */
+()=>`${sky('#3c6fb6','#9fb6cf','#f0c06a','#f4a24a')}${clouds(8,60,330,'#fff3d0',.5)}${rays(210,250,'#fff1b8',13,.1)}<path d="M0 640 Q90 590 150 560 Q210 520 250 560 Q320 600 400 620 L400 800 L0 800Z" fill="#8a5a36"/>${Array.from({length:60},()=>`<ellipse cx="${rnd()*400}" cy="${560+rnd()*240}" rx="${4+rnd()*12}" ry="${3+rnd()*6}" fill="${['#a26a3e','#6e4326','#b97b48'][Math.floor(rnd()*3)]}"/>`).join('')}<rect x="196" y="486" width="10" height="56" fill="#f4f0e6"/><rect x="196" y="486" width="3" height="56" fill="#fff"/><path d="M150 800 Q170 700 190 640 Q200 600 205 560" stroke="#f6f2e8" stroke-width="10" fill="none" stroke-dasharray="3 4" opacity=".9"/>${crowd(640,800,260,['#fff','#f4f0e6','#e8e2d4'],2.4)}`,
+/* 7 Оазис: пальмы и барханы Аравии */
+()=>`${sky('#1e2a5c','#a3507a','#f48a52','#fcd27a')}<circle cx="120" cy="470" r="42" fill="#ffeab0"/><circle cx="120" cy="470" r="120" fill="url(#mg)"/>${ridge(500,50,'#d8743e',5)}${ridge(560,60,'#c05a2e',6)}${water(610,'#f2a060','#7a3a3a','#ffe8b8')}${palm(60,640,170,'#2a1410')}${palm(320,650,150,'#2a1410')}${palm(370,660,120,'#2a1410')}${ridge(720,30,'#3a1a12',5)}`,
+/* 8 Белая мечеть на рассвете с отражением */
+()=>`${sky('#6d7fb8','#c3a8c8','#f7c6a8','#fde6c8')}${clouds(5,90,280,'#fff',.4)}${dome(200,500,74,'#f7f5f0','#fff',true,'#e8c66a')}${dome(118,530,32,'#f2efe8','#fff',true)}${dome(282,530,32,'#f2efe8','#fff',true)}${dome(70,548,20,'#efebe3','#fff',true)}${dome(330,548,20,'#efebe3','#fff',true)}<rect x="40" y="530" width="320" height="100" fill="#f5f2ec"/>${arches(40,630,320,90,8,'#f5f2ec','#e8c48a')}${minaret(20,630,260,12,'#fbfaf6','#fff','#e8c66a')}${minaret(380,630,260,12,'#fbfaf6','#fff','#e8c66a')}<g transform="translate(0 1260) scale(1 -1)" opacity=".35">${dome(200,500,74,'#f7f5f0','#fff',true)}<rect x="40" y="530" width="320" height="100" fill="#f5f2ec"/>${minaret(20,630,260,12,'#fbfaf6','#fff','#e8c66a')}${minaret(380,630,260,12,'#fbfaf6','#fff','#e8c66a')}</g>${water(630,'#9fb2d6','#5a6ea0','#fff')}`,
+/* 9 Мечеть с шестью минаретами над морем на закате */
+()=>`${sky('#2b2350','#7a3e6e','#e0704e','#f6b05a')}<circle cx="200" cy="560" r="40" fill="#ffd98a"/>${water(600,'#d27a52','#2b2a4a','#ffd9a0')}<g fill="#2b1d33">${[[30,330],[80,300],[130,280],[270,280],[320,300],[370,330]].map(([x,h])=>`<rect x="${x-5}" y="${600-h}" width="10" height="${h}"/><rect x="${x-8}" y="${600-h*.75}" width="16" height="5"/><rect x="${x-8}" y="${600-h*.5}" width="16" height="5"/><path d="M${x-6} ${600-h} L${x} ${600-h-36} L${x+6} ${600-h}Z"/>`).join('')}<path d="M110 600 L110 470 A90 70 0 0 1 290 470 L290 600Z"/><path d="M80 600 L80 520 A40 34 0 0 1 160 520 L160 600Z"/><path d="M240 600 L240 520 A40 34 0 0 1 320 520 L320 600Z"/><rect x="198" y="380" width="4" height="20"/></g>`,
+/* 10 Двор мечети ночью: арки с фонарями */
+()=>`${sky('#05081c','#101a44','#1f2c5e','#2d3a6a')}${stars(90,360)}${moon(90,140,22)}${dome(250,420,90,'#1d2650','#3b4a8a',false,'#e8c66a')}${minaret(360,520,330,12,'#232d5a','#3a4a88','#e8c66a')}<rect x="0" y="420" width="400" height="200" fill="#1a2148"/>${arches(0,620,400,190,5,'#1a2148','#f3b35c')}${[40,120,200,280,360].map(x=>`<line x1="${x}" y1="460" x2="${x}" y2="490" stroke="#c8a24e" stroke-width="1.2"/><rect x="${x-7}" y="490" width="14" height="20" rx="3" fill="#ffd27a"/><circle cx="${x}" cy="500" r="26" fill="url(#lg)"/>`).join('')}<rect y="620" width="400" height="180" fill="#2a2f52"/>${Array.from({length:10},(_,i)=>`<path d="M${-40+i*48} 800 L${100+i*20} 620" stroke="#3b4170" stroke-width="2"/>`).join('')}<rect y="620" width="400" height="180" fill="#f3b35c" opacity=".08"/>`
+];
+const SCENE_DEFS='<radialGradient id="mg"><stop offset="0" stop-color="#fff6dc" stop-opacity=".55"/><stop offset="1" stop-color="#fff6dc" stop-opacity="0"/></radialGradient><radialGradient id="lg"><stop offset="0" stop-color="#ffd27a" stop-opacity=".6"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>';
+
+let curScene=1;
+function scene(i){seed=i*977+13;const k=i%SCENES.length;return sceneRaw(i,k).replace(/id="(\w+)"/g,`id="$1_${i}"`).replace(/url\(#(\w+)\)/g,`url(#$1_${i})`)}
+function sceneRaw(i,k){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice"><defs>${SCENE_DEFS}<filter id="p${i}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.018 0.06" numOctaves="3" seed="${i}"/><feDisplacementMap in="SourceGraphic" scale="8"/></filter><filter id="t${i}"><feTurbulence type="fractalNoise" baseFrequency="0.9 0.25" numOctaves="2" seed="${i+3}"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 -.18"/></filter></defs><g filter="url(#p${i})">${SCENES[k]()}</g><rect width="400" height="800" filter="url(#t${i})" opacity=".5"/></svg>`}
+const bgA=$('bgA'),bgB=$('bgB');let front=bgA;
+/* фон рисуется в картинку: так он не пропадает на iPhone, где тяжёлые SVG-фильтры иногда не отрисовываются */
+const loadSvg=(svg,W,H)=>new Promise((ok,no)=>{const im=new Image();im.onload=()=>ok(im);im.onerror=no;im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg.replace('<svg ',`<svg width="${W}" height="${H}" `))});
+function opaque(ctx,W,H){const d=ctx.getImageData(0,0,W,H).data;let n=0,s=0;for(let y=H*.05;y<H;y+=H/12)for(let x=W*.05;x<W;x+=W/8){s+=d[(Math.floor(y)*W+Math.floor(x))*4+3];n++}return s/n>240}
+async function paintScene(n,W,H){
+  const c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d');const m=Math.round(W*.06);
+  try{ctx.drawImage(await loadSvg(scene(n),W,H),-m,-m,W+2*m,H+2*m);if(opaque(ctx,W,H))return c}catch(e){}
+  ctx.clearRect(0,0,W,H);
+  try{ctx.drawImage(await loadSvg(scene(n).replace(/ filter="url\([^)]*\)"/g,''),W,H),0,0,W,H);if(opaque(ctx,W,H))return c}catch(e){}
+  return null;
+}
+let bgTok=0;
+async function setBg(n){
+  if(n===curScene&&front.innerHTML)return;curScene=n;const tok=++bgTok;
+  const back=front===bgA?bgB:bgA;let html;
+  try{const c=await paintScene(n,600,1200);if(c)html=`<img alt="" src="${c.toDataURL('image/jpeg',.88)}">`}catch(e){}
+  if(!html)html=scene(n).replace(/ filter="url\([^)]*\)"/g,'');
+  if(tok!==bgTok)return;
+  back.innerHTML=html;back.style.opacity=1;front.style.opacity=0;front=back;
+}
+function randomScene(){let n;do{n=Math.floor(Math.random()*100)}while(n%SCENES.length===curScene%SCENES.length);return n}
+
+/* ---------- аят дня: меняется каждый день в 10:00 по времени телефона ---------- */
+function dailyDate(){return new Date(Date.now()-DAILY_HOUR*3600e3)}
+function dailyIndex(){const d=dailyDate();const day=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return (day*29+7)%A.length}
+function untilNext(){const n=new Date(),x=new Date(n);x.setHours(DAILY_HOUR,0,0,0);if(x<=n)x.setDate(x.getDate()+1);const m=Math.ceil((x-n)/6e4);return `${Math.floor(m/60)} ${t('h')} ${m%60} ${t('m')}`}
+
+const card=$('card');
+let cur=-1,isDaily=true,bag=[],lastDaily=-1;
+function next(){if(!bag.length){bag=A.map((_,i)=>i);for(let i=bag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bag[i],bag[j]]=[bag[j],bag[i]]}if(bag[bag.length-1]===cur)bag.unshift(bag.pop())}return bag.pop()}
+const surah=s=>(L==='kz'?SK:S)[s];
+const I_COPY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+const I_IMG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>';
+function render(anim){
+  const[ref,ar,ru,kz]=A[cur],[s,v]=ref.split(':');
+  const _d=dailyDate(),dd=L==='kz'?_d.getDate()+' '+['қаңтар','ақпан','наурыз','сәуір','мамыр','маусым','шілде','тамыз','қыркүйек','қазан','қараша','желтоқсан'][_d.getMonth()]:_d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+  card.innerHTML=`<div class="${anim?'in':''}">${isDaily?`<span class="tag">${esc(t('daily'))} · ${esc(dd)}</span>`:''}
+  <p class="ar" lang="ar">${esc(ar)}</p><p class="tr">${esc(L==='kz'?kz:ru)}</p>
+  <p class="ref">${esc(surah(s))} · <a href="https://quran.com/${esc(s)}/${esc(v.split('-')[0])}" target="_blank" rel="noopener">${esc(ref)}</a></p>${L==='kz'?`<p class="ref" style="margin-top:4px"><a href="https://quranenc.com/kk/browse/kazakh_altai/${esc(s)}/${esc(v.split('-')[0])}" target="_blank" rel="noopener">${esc(t('altai'))}</a></p>`:''}
+  ${isDaily?`<p class="sub" id="cd">${esc(t('next'))} ${esc(untilNext())}</p>`:`<p class="sub"><button type="button" id="bk">${esc(t('back'))}</button></p>`}
+  <div class="tools"><button class="ti" id="cp" type="button" aria-label="${esc(t('copy'))}" title="${esc(t('copy'))}">${I_COPY}</button><button class="ti" id="im" type="button" aria-label="${esc(t('img'))}" title="${esc(t('img'))}">${I_IMG}</button></div></div>`;
+  $('cp').onclick=copy;$('im').onclick=makeImage;
+  const bk=$('bk');if(bk)bk.onclick=()=>{stop();showDaily(true)};
+}
+function showDaily(anim){isDaily=true;cur=dailyIndex();lastDaily=cur;setBg(cur*3+1);render(anim)}
+$('go').addEventListener('click',()=>{stop();isDaily=false;cur=next();setBg(randomScene());render(true)});
+setInterval(()=>{if(dailyIndex()!==lastDaily){if(isDaily)showDaily(true);else lastDaily=dailyIndex()}else if(isDaily&&$('cd'))$('cd').textContent=`${t('next')} ${untilNext()}`},30000);
+async function copy(){const[ref,ar,ru,kz]=A[cur];try{await navigator.clipboard.writeText(`${ar}\n\n${L==='kz'?kz:ru}\n— ${t('quran')}, ${surah(ref.split(':')[0])} ${ref}`);show(t('copied'))}catch(e){show(t('nocopy'))}}
+
+/* ---------- картинка для сторис 1080×1920 ---------- */
+function wrap(ctx,text,maxW){const w=text.split(' '),lines=[];let line='';for(const x of w){const tst=line?line+' '+x:x;if(ctx.measureText(tst).width>maxW&&line){lines.push(line);line=x}else line=tst}if(line)lines.push(line);return lines}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+let imgBlob=null,dl=null;
+(async()=>{try{dl=await window.claude?.use?.('downloads')}catch(e){dl=null}})();
+$('isave').addEventListener('click',async()=>{if(!dl||!imgBlob)return;try{await dl.save({filename:`ayat-${A[cur][0].replace(/[:]/g,'-')}.jpg`,data:imgBlob});show(t('saved'))}catch(e){if(e&&e.code==='declined')show(t('declined'));else if(e&&['unavailable','host_unavailable','not_granted','capability_disabled','capability_removed'].includes(e.code)){$('isave').hidden=true}else show(t('noimg'))}});
+async function makeImage(){
+  const is=$('isheet'),slot=$('islot');$('isave').hidden=true;imgBlob=null;slot.innerHTML=`<div class="wait">${esc(t('making'))}</div>`;open(is);
+  try{
+    await Promise.all([document.fonts.load('64px Amiri'),document.fonts.load('600 40px Inter'),document.fonts.load('40px Inter')]).catch(()=>{});
+    const W=1080,H=1920,c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d');
+    const bgc=await paintScene(curScene,W,H);if(bgc)ctx.drawImage(bgc,0,0);else{ctx.fillStyle='#1b2550';ctx.fillRect(0,0,W,H)}
+    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(0,0,0,.3)');g.addColorStop(.5,'rgba(0,0,0,.1)');g.addColorStop(1,'rgba(0,0,0,.55)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    const[ref,ar,ru,kz]=A[cur],tr=L==='kz'?kz:ru,pad=80,cw=W-2*pad-120;
+    ctx.font='68px Amiri, serif';ctx.direction='rtl';const al=wrap(ctx,ar,cw);
+    ctx.direction='ltr';ctx.font='44px Inter, sans-serif';const tl=wrap(ctx,tr,cw);
+    const hA=al.length*120,hT=tl.length*62,ch=90+hA+40+hT+50+40+80,cy=(H-ch)/2;
+    rr(ctx,pad,cy,W-2*pad,ch,56);ctx.fillStyle='rgba(10,12,20,.42)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,.18)';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';let y=cy+90;
+    ctx.font='68px Amiri, serif';ctx.direction='rtl';for(const l of al){ctx.fillText(l,W/2,y+30);y+=120}
+    ctx.direction='ltr';y+=40;ctx.font='44px Inter, sans-serif';for(const l of tl){ctx.fillText(l,W/2,y);y+=62}
+    y+=30;ctx.fillStyle='rgba(255,255,255,.72)';ctx.font='34px Inter, sans-serif';ctx.fillText(`${surah(ref.split(':')[0])} · ${ref}`,W/2,y);
+    ctx.font='600 30px Inter, sans-serif';ctx.fillStyle='rgba(255,255,255,.8)';ctx.fillText('Tanayat'+(isDaily?' · '+t('daily'):''),W/2,H-120);
+    const url=c.toDataURL('image/jpeg',.9);
+    imgBlob=await new Promise(r=>c.toBlob(r,'image/jpeg',.92));
+    slot.innerHTML=`<img class="shot" alt="${esc(tr)}" src="${url}">`;
+    $('isave').hidden=!(dl&&imgBlob);
+  }catch(e){slot.innerHTML=`<div class="wait">${esc(t('noimg'))}</div>`}
+}
+
+const note=$('note');
+function stop(){}
+
+/* ---------- окна ---------- */
+function open(el){el.classList.add('open')}
+document.querySelectorAll('.sheet').forEach(sh=>{sh.addEventListener('click',e=>{if(e.target===sh||e.target.closest('[data-close]'))sh.classList.remove('open')})});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.sheet.open').forEach(s=>s.classList.remove('open'))});
+$('don').addEventListener('click',()=>open($('sheet')));
+
+/* ---------- зикр: 33 + 33 + 33 + 1 = 100 ---------- */
+const Z=[
+ {n:33,ar:'سُبْحَانَ ٱللَّهِ',ru:['СубханАллах','Пречист Аллах'],kz:['СубханАллаһ','Алла пәк']},
+ {n:33,ar:'ٱلْحَمْدُ لِلَّهِ',ru:['Альхамдулиллях','Хвала Аллаху'],kz:['Әлхамдулиллаһ','Аллаға мадақ']},
+ {n:33,ar:'ٱللَّهُ أَكْبَرُ',ru:['Аллаху Акбар','Аллах велик'],kz:['Аллаһу Акбар','Алла ұлы']},
+ {n:1,ar:'لَا إِلَٰهَ إِلَّا ٱللَّهُ وَحْدَهُۥ لَا شَرِيكَ لَهُۥ، لَهُ ٱلْمُلْكُ وَلَهُ ٱلْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَىْءٍ قَدِيرٌ',ru:['Ля иляха илляЛлаху вахдаху ля шарика лях, ляхуль-мульку ва ляхуль-хамду ва хуа ‘аля кулли шай’ин кадир','Нет божества, кроме Аллаха, Единого, у Которого нет сотоварища. Ему принадлежат власть и хвала, и Он властен над всем.'],kz:['Лә иләһә иллаллаһу уахдаһу лә шәрика ләһ, ләһул-мулку уа ләһул-хамду уа һуа ‘ала кулли шәй’ин қадир','Алладан басқа құдай жоқ, Ол жалғыз, Оның серігі жоқ. Билік те, мадақ та Оған тән, Ол — бәріне құдіретті.']}];
+let zi=0,zc=0;
+try{const v=JSON.parse(localStorage.getItem('zikr2')||'null');if(v&&v.i>=0&&v.i<=4&&v.c>=0&&v.c<33){zi=v.i;zc=v.c}}catch(e){}
+function zsave(){try{localStorage.setItem('zikr2',JSON.stringify({i:zi,c:zc}))}catch(e){}}
+function zdraw(){
+  const done=zi>=Z.length,z=Z[Math.min(zi,Z.length-1)],w=z[L];
+  $('segs').innerHTML=Z.map((x,k)=>`<i><b style="width:${k<zi?100:k===zi?zc/x.n*100:0}%"></b></i>`).join('');
+  $('stage').textContent=done?'100 / 100':`${t('stage')} ${zi+1} / ${Z.length}`;
+  $('zar').textContent=z.ar;$('zsheet').classList.toggle('long',zi>=3);$('ztr').textContent=w[0];$('zru').textContent=w[1];
+  $('zn').textContent=done?'100':zc;$('zof').textContent=done?'':`${t('of')} ${z.n}`;
+  $('ring').style.strokeDashoffset=289*(1-(done?1:zc/z.n));
+  $('fin').textContent=done?t('fin'):'';
+  $('tap').setAttribute('aria-label',done?t('fin'):`${w[0]}: ${zc} ${t('of')} ${z.n}`);
+}
+function ztap(){
+  if(zi>=Z.length)return;
+  zc++;try{navigator.vibrate&&navigator.vibrate(zc===Z[zi].n?[40,60,40]:12)}catch(e){}
+  if(zc>=Z[zi].n){zi++;zc=0;if(zi<Z.length)show(t('now')+Z[zi][L][0].split(' ').slice(0,3).join(' ')+(zi===3?'…':''))}
+  zsave();zdraw();
+}
+const tap=$('tap');
+tap.addEventListener('pointerdown',e=>{if(e.button>0)return;e.preventDefault();tap.classList.add('press');ztap()});
+['pointerup','pointercancel','pointerleave'].forEach(x=>tap.addEventListener(x,()=>tap.classList.remove('press')));
+tap.addEventListener('click',e=>{if(e.detail===0)ztap()});
+tap.addEventListener('contextmenu',e=>e.preventDefault());
+$('zreset').addEventListener('click',()=>{zi=0;zc=0;zsave();zdraw()});
+$('zbtn').addEventListener('click',()=>{zdraw();open($('zsheet'))});
+
+/* ---------- язык ---------- */
+function applyLang(){
+  document.documentElement.lang=L==='kz'?'kk':'ru';
+  document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===L));
+  $('donSlot').innerHTML=`<div class="kaspi"><span class="kl">Kaspi</span><b>${esc(KASPI)}</b><button class="btn pri" id="kcp" type="button">${esc(t('kcopy'))}</button><p class="muted">${esc(t('khow'))}</p></div>`;
+  $('kcp').onclick=async()=>{try{await navigator.clipboard.writeText(KASPI.replace(/\s/g,''));show(t('copied'))}catch(e){show(t('nocopy'))}};
+  note.textContent=t('note');
+  if(cur>=0)render(false);zdraw();
+}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{if(L===b.dataset.l)return;stop();L=b.dataset.l;try{localStorage.setItem('lang',L)}catch(e){}applyLang()}));
+
+showDaily(true);applyLang();
+}
+</script>
+</body>
+</html>
